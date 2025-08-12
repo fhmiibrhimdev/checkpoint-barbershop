@@ -48,13 +48,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data->groupBy('nama_cabang') as $row)
-                                <tr>
-                                    <td class="tw-text-sm tw-tracking-wider" colspan="10">
-                                        <b>Lokasi: {{ $row[0]->nama_cabang }}</b>
-                                    </td>
-                                </tr>
-                                @foreach ($row as $result)
+                                @forelse ($data as $result)
                                 <tr class='text-center'>
                                     <td class='tw-whitespace-nowrap'>
                                         {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
@@ -78,7 +72,6 @@
                                         </button>
                                     </td>
                                 </tr>
-                                @endforeach
                                 @empty
                                 <tr>
                                     <td colspan='8' class='text-center'>No data available in the table</td>
@@ -95,12 +88,7 @@
             </div>
             @if ($agent->isMobile())
             <div class="tw-px-3 -tw-mt-1">
-                @forelse ($data->groupBy('nama_cabang') as $row)
-                <div
-                    class="tw-font-semibold tw-text-[#34395e] tw-tracking-[0.5px] tw-text-base tw-mt-6 tw-mb-4 lg:tw-px-0">
-                    <p>{{ $row[0]->nama_cabang }}</p>
-                </div>
-                @foreach ($row as $result)
+                @forelse ($data as $result)
                 <div
                     class="tw-bg-white tw-rounded-lg tw-shadow-md tw-shadow-gray-300 tw-h-full tw-px-3 tw-py-3 tw-mt-3 tw-text-[#34395e]">
                     <div class="tw-flex tw-justify-between tw-items-center">
@@ -135,7 +123,6 @@
 
                     </div>
                 </div>
-                @endforeach
                 @empty
                 No data available
                 @endforelse
@@ -167,18 +154,6 @@
                 </div>
                 <form>
                     <div class='modal-body tw-px-4 lg:tw-px-6'>
-                        <div class='form-group'>
-                            <label for='id_cabang'>ID Cabang</label>
-                            {{-- <span>{{ $id_cabang }}</span> --}}
-                            <div wire:ignore>
-                                <select wire:model='id_cabang' id='id_cabang' class='form-control select2'>
-                                    @foreach ($cabangs as $cabang)
-                                    <option value='{{ $cabang->id }}'>{{ $cabang->nama_cabang }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('id_cabang') <span class='text-danger'>{{ $message }}</span> @enderror
-                        </div>
                         <div class='form-group'>
                             <label for='nama_pelanggan'>Nama Pelanggan</label>
                             <input type='text' wire:model='nama_pelanggan' id='nama_pelanggan' class='form-control'>

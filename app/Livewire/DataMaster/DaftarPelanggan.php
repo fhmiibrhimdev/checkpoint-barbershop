@@ -23,7 +23,6 @@ class DaftarPelanggan extends Component
     ];
 
     protected $rules = [
-        'id_cabang'           => 'required',
         'nama_pelanggan'      => 'required',
         'no_telp'             => '',
         'deskripsi'           => '',
@@ -57,12 +56,10 @@ class DaftarPelanggan extends Component
         $this->searchResetPage();
         $search = '%' . $this->searchTerm . '%';
 
-        $data = DB::table('daftar_pelanggan')->select('daftar_pelanggan.id', 'daftar_pelanggan.nama_pelanggan', 'daftar_pelanggan.no_telp', 'daftar_pelanggan.jk', 'cabang_lokasi.nama_cabang', 'users.name', 'daftar_pelanggan.total_kunjungan')
-            ->join('cabang_lokasi', 'cabang_lokasi.id', 'daftar_pelanggan.id_cabang')
+        $data = DB::table('daftar_pelanggan')->select('daftar_pelanggan.id', 'daftar_pelanggan.nama_pelanggan', 'daftar_pelanggan.no_telp', 'daftar_pelanggan.jk', 'users.name', 'daftar_pelanggan.total_kunjungan')
             ->join('users', 'users.id', 'daftar_pelanggan.id_user')
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', $search);
-                $query->orWhere('nama_cabang', 'LIKE', $search);
                 $query->orWhere('nama_pelanggan', 'LIKE', $search);
                 $query->orWhere('daftar_pelanggan.no_telp', 'LIKE', $search);
             })
@@ -81,7 +78,7 @@ class DaftarPelanggan extends Component
         try {
             ModelsDaftarPelanggan::create([
                 'id_user'             => Auth::user()->id,
-                'id_cabang'           => $this->id_cabang,
+                'id_cabang'           => $this->filter_id_cabang,
                 'nama_pelanggan'      => $this->nama_pelanggan,
                 'jk'                  => $this->jk,
                 'no_telp'             => $this->no_telp,
@@ -100,7 +97,6 @@ class DaftarPelanggan extends Component
         $this->isEditing        = true;
         $data = ModelsDaftarPelanggan::where('id', $id)->first();
         $this->dataId           = $id;
-        $this->id_cabang        = $data->id_cabang;
         $this->nama_pelanggan   = $data->nama_pelanggan;
         $this->jk               = $data->jk;
         $this->no_telp          = $data->no_telp;
@@ -117,7 +113,6 @@ class DaftarPelanggan extends Component
         if ($this->dataId) {
             ModelsDaftarPelanggan::findOrFail($this->dataId)->update([
                 'id_user'             => Auth::user()->id,
-                'id_cabang'           => $this->id_cabang,
                 'nama_pelanggan'      => $this->nama_pelanggan,
                 'jk'                  => $this->jk,
                 'no_telp'             => $this->no_telp,
@@ -180,7 +175,7 @@ class DaftarPelanggan extends Component
     private function resetInputFields()
     {
         $this->id_user             = Auth::user()->id;
-        $this->id_cabang           = $this->cabangs->first()->id;
+        // $this->id_cabang           = $this->cabangs->first()->id;
         $this->nama_pelanggan      = '';
         $this->jk                  = NULL;
         $this->no_telp             = '62';

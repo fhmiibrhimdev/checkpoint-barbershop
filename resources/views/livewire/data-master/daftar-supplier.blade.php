@@ -165,18 +165,6 @@
                 <form>
                     <div class='modal-body tw-px-4 lg:tw-px-6'>
                         <div class='form-group'>
-                            <label for='id_cabang'>ID Cabang</label>
-                            {{-- <span>{{ $id_cabang }}</span> --}}
-                            <div wire:ignore>
-                                <select wire:model='id_cabang' id='id_cabang' class='form-control select2'>
-                                    @foreach ($cabangs as $cabang)
-                                    <option value='{{ $cabang->id }}'>{{ $cabang->nama_cabang }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('id_cabang') <span class='text-danger'>{{ $message }}</span> @enderror
-                        </div>
-                        <div class='form-group'>
                             <label for='nama_supplier'>Nama Supplier</label>
                             <input type='text' wire:model='nama_supplier' id='nama_supplier' class='form-control'>
                             @error('nama_supplier') <span class='text-danger'>{{ $message }}</span> @enderror

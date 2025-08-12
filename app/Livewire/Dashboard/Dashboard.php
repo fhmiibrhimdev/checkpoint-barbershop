@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\User;
+use App\Services\GlobalDataService;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 class Dashboard extends Component
 {
     #[Title('Dashboard')]
+    public $cabangs;
+
+    public function mount(GlobalDataService $globalDataService)
+    {
+        $this->cabangs = $globalDataService->getCabangs();
+    }
 
     public function render()
     {

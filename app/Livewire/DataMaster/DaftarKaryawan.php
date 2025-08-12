@@ -64,9 +64,8 @@ class DaftarKaryawan extends Component
         $this->searchResetPage();
         $search = '%' . $this->searchTerm . '%';
 
-        $data = ModelsDaftarKaryawan::select('daftar_karyawan.id', 'daftar_karyawan.role_id', 'cabang_lokasi.nama_cabang', 'users.name', 'users.email', 'daftar_karyawan.no_telp', 'daftar_karyawan.saldo_kasbon')
+        $data = ModelsDaftarKaryawan::select('daftar_karyawan.id', 'daftar_karyawan.role_id', 'users.name', 'users.email', 'daftar_karyawan.no_telp', 'daftar_karyawan.saldo_kasbon')
             ->leftJoin('users', 'users.id', 'daftar_karyawan.id_user')
-            ->leftJoin('cabang_lokasi', 'cabang_lokasi.id', 'daftar_karyawan.id_cabang')
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', $search);
                 $query->orWhere('role_id', 'LIKE', $search);
@@ -90,7 +89,7 @@ class DaftarKaryawan extends Component
         try {
             // Simpan user
             $user = User::create([
-                'id_cabang'         => $this->id_cabang,
+                'id_cabang'         => $this->filter_id_cabang,
                 'name'              => $this->name,
                 'email'             => $this->email,
                 'email_verified_at' => null,
@@ -104,7 +103,7 @@ class DaftarKaryawan extends Component
             // Simpan data karyawan
             ModelsDaftarKaryawan::create([
                 'id_user'    => $user->id,
-                'id_cabang'  => $this->id_cabang,
+                'id_cabang'  => $this->filter_id_cabang,
                 'saldo_kasbon'  => '0',
                 'role_id'    => $this->role_id,
                 'tgl_lahir'  => $this->tgl_lahir,
@@ -180,7 +179,6 @@ class DaftarKaryawan extends Component
 
                 // Update user name & email saja
                 $user->update([
-                    'id_cabang' => $this->id_cabang,
                     'name'      => $this->name,
                     'email'     => $this->email,
                 ]);
@@ -193,7 +191,6 @@ class DaftarKaryawan extends Component
 
                 // Update data karyawan
                 $data->update([
-                    'id_cabang'  => $this->id_cabang,
                     'role_id'    => $this->role_id,
                     'tgl_lahir'  => $this->tgl_lahir,
                     'jk'         => $this->jk,
@@ -277,7 +274,7 @@ class DaftarKaryawan extends Component
 
     private function resetInputFields()
     {
-        $this->id_cabang           = $this->cabangs->first()->id;
+        // $this->id_cabang           = $this->cabangs->first()->id;
         $this->name                = '';
         $this->email               = '';
         $this->password            = '1';

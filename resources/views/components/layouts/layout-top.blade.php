@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>{{ $title }} - Sintesa</title>
+    <title>{{ $title }} - CheckPoint Barbershop</title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('/assets/stisla/css/bootstrap.min.css') }}" />
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://static.fontawesome.com/css/fontawesome-app.css" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-pro/css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/midragon/css/custom.css') }}">
-    <link rel="icon" href="{{ asset('/assets/MIDRAGON.png') }}">
+    <link rel="icon" href="{{ asset('/assets/logo-checkpoint-barbershop.jpeg') }}">
 
     @stack('general-css')
     <style>

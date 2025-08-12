@@ -163,16 +163,16 @@
 
     <div class='modal fade' data-backdrop="static" wire:ignore.self id='formDataModal'
         aria-labelledby='formDataModalLabel' aria-hidden='true'>
-        <div class='modal-dialog'>
-            <div class='modal-content'>
-                <div class='modal-header'>
+        <div class='modal-dialog tw-w-full tw-m-0 sm:tw-w-auto sm:tw-m-[1.75rem_auto]'>
+            <div class='modal-content tw-rounded-none lg:tw-rounded-md'>
+                <div class='modal-header tw-px-4 lg:tw-px-6'>
                     <h5 class='modal-title' id='formDataModalLabel'>{{ $isEditing ? 'Edit Data' : 'Add Data' }}</h5>
                     <button type='button' wire:click='cancel()' class='close' data-dismiss='modal' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                     </button>
                 </div>
                 <form>
-                    <div class='modal-body'>
+                    <div class='modal-body tw-px-4 lg:tw-px-6'>
                         <div class='form-group'>
                             <label for='id_produk'>Nama Produk</label>
                             <select wire:model='id_produk' id='id_produk' class='form-control select2'>

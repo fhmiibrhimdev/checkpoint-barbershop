@@ -217,7 +217,7 @@
                 </div>
                 <form>
                     <div
-                        class="modal-body tw-px-4 lg:tw-px-6 tw-max-h-[calc(100vh-200px)] tw-overflow-y-auto tw-overflow-x-hidden no-scrollbar">
+                        class="modal-body tw-px-4 lg:tw-px-6 tw-max-h-[calc(100vh-300px)] tw-overflow-y-auto tw-overflow-x-hidden no-scrollbar">
                         <div class='form-group'>
                             <label for='id_pelanggan'>Pelanggan (Opsional)</label>
                             {{-- <span>{{ $id_pelanggan }}</span> --}}

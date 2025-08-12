@@ -25,7 +25,6 @@ class DaftarSupplier extends Component
     ];
 
     protected $rules = [
-        'id_cabang'           => 'required',
         'nama_supplier'       => 'required',
         'no_telp'             => '',
         'deskripsi'           => '',
@@ -83,7 +82,7 @@ class DaftarSupplier extends Component
         try {
             ModelsDaftarSupplier::create([
                 'id_user'             => Auth::user()->id,
-                'id_cabang'           => $this->id_cabang,
+                'id_cabang'           => $this->filter_id_cabang,
                 'nama_supplier'      => $this->nama_supplier,
                 'no_telp'             => $this->no_telp,
                 'deskripsi'           => $this->deskripsi,
@@ -119,7 +118,6 @@ class DaftarSupplier extends Component
         if ($this->dataId) {
             ModelsDaftarSupplier::findOrFail($this->dataId)->update([
                 'id_user'             => Auth::user()->id,
-                'id_cabang'           => $this->id_cabang,
                 'nama_supplier'       => $this->nama_supplier,
                 'no_telp'             => $this->no_telp,
                 'deskripsi'           => $this->deskripsi,
@@ -182,7 +180,7 @@ class DaftarSupplier extends Component
     private function resetInputFields()
     {
         $this->id_user             = Auth::user()->id;
-        $this->id_cabang           = $this->cabangs->first()->id;
+        // $this->id_cabang           = $this->cabangs->first()->id;
         $this->nama_supplier       = '';
         $this->no_telp             = '62';
         $this->deskripsi           = '-';

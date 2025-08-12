@@ -24,7 +24,6 @@ class Produk extends Component
     ];
 
     protected $rules = [
-        'id_cabang'           => 'required',
         'id_user'             => 'required',
         'id_kategori'         => 'required',
         'id_satuan'           => 'required',
@@ -63,8 +62,8 @@ class Produk extends Component
         $this->satuans    = $this->globalDataService->getSatuans();
 
         $this->filter_id_cabang  = $this->cabangs->first()->id;
-
-        $this->karyawans = $this->globalDataService->getKaryawansCustom($this->id_cabang ?? $this->cabangs->first()->id);
+        // dd($this->filter_id_cabang);
+        $this->karyawans = $this->globalDataService->getKaryawansCustom($this->filter_id_cabang);
         // dd($this->karyawans);
 
         // Init komisi_karyawan default kosong
@@ -79,9 +78,14 @@ class Produk extends Component
         $this->resetInputFields();
     }
 
+    public function updatedFilterIdCabang(GlobalDataService $globalDataService)
+    {
+        $this->karyawans = $globalDataService->getKaryawansCustom($this->filter_id_cabang);
+    }
+
     public function updatedIdCabang(GlobalDataService $globalDataService)
     {
-        $this->karyawans = $globalDataService->getKaryawansCustom($this->id_cabang);
+        $this->karyawans = $globalDataService->getKaryawansCustom($this->filter_id_cabang);
     }
 
     public function updatedIdKategori()
@@ -106,9 +110,12 @@ class Produk extends Component
         $this->total_karyawan = DB::table('daftar_karyawan')
             ->select('id_cabang', DB::raw('COUNT(*) as total'))
             ->where('role_id', 'capster')
+            ->where('id_cabang', $this->filter_id_cabang) // Filter berdasarkan id_cabang
             ->groupBy('id_cabang')
             ->pluck('total', 'id_cabang') // hasil: [id_cabang => total]
             ->toArray();
+
+        // dd($this->total_karyawan);
 
         $komisi_data = DB::table('komisi')
             ->select('id_produk', DB::raw('count(*) as jumlah_komisi'))
@@ -121,8 +128,9 @@ class Produk extends Component
             ->pluck('jumlah_komisi', 'id_produk')
             ->toArray();
 
-        $data = DB::table('produk')->select('produk.id', 'produk.id_cabang', 'produk.nama_item', 'produk.harga_pokok', 'produk.harga_jasa', 'produk.komisi', 'produk.stock', 'produk.deskripsi', 'produk.gambar', 'cabang_lokasi.nama_cabang', 'kategori_produk.nama_kategori', 'kategori_satuan.nama_satuan')
-            ->leftJoin('cabang_lokasi', 'cabang_lokasi.id', 'produk.id_cabang')
+        // dd($komisi_data);
+
+        $data = DB::table('produk')->select('produk.id', 'produk.id_cabang', 'produk.nama_item', 'produk.harga_pokok', 'produk.harga_jasa', 'produk.komisi', 'produk.stock', 'produk.deskripsi', 'produk.gambar', 'kategori_produk.nama_kategori', 'kategori_satuan.nama_satuan')
             ->leftJoin('kategori_produk', 'kategori_produk.id', 'produk.id_kategori')
             ->leftJoin('kategori_satuan', 'kategori_satuan.id', 'produk.id_satuan')
             ->where(function ($query) use ($search) {
@@ -145,7 +153,7 @@ class Produk extends Component
         try {
             // Simpan data produk
             $produk = ModelsProduk::create([
-                'id_cabang'    => $this->id_cabang,
+                'id_cabang'    => $this->filter_id_cabang,
                 'id_user'      => $this->id_user,
                 'id_kategori'  => $this->id_kategori,
                 'id_satuan'    => $this->id_satuan,
@@ -206,12 +214,12 @@ class Produk extends Component
         $this->gambar           = $data->gambar;
         $this->updatedIdKategori();
 
-        $this->karyawans = $globalDataService->getKaryawansCustom($this->id_cabang);
+        $this->karyawans = $globalDataService->getKaryawansCustom($this->filter_id_cabang);
 
         // 🟡 Ambil komisi dari pivot dan isi ke $komisi_karyawan
         $komisi = DB::table('komisi')
             ->join('daftar_karyawan', 'komisi.id_karyawan', '=', 'daftar_karyawan.id')
-            ->where('id_cabang', $this->id_cabang)
+            ->where('id_cabang', $this->filter_id_cabang)
             ->select('komisi.*')
             ->where('id_produk', $id)
             ->get();
@@ -232,7 +240,7 @@ class Produk extends Component
             try {
                 // 1. Update data produk
                 ModelsProduk::findOrFail($this->dataId)->update([
-                    // 'id_cabang'           => $this->id_cabang,
+                    // 'id_cabang'           => $this->filter_id_cabang,
                     'id_user'             => Auth::user()->id,
                     'id_satuan'           => $this->id_satuan,
                     // 'kode_item'           => $this->kode_item,
@@ -348,7 +356,7 @@ class Produk extends Component
     private function resetInputFields()
     {
         $this->id_user             = Auth::user()->id;
-        $this->id_cabang           = $this->cabangs->first()->id;
+        // $this->id_cabang           = $this->cabangs->first()->id;
         $this->id_kategori         = $this->kategoris->first()->id;
         $this->id_satuan           = $this->satuans->first()->id;
         $this->kode_item           = NULL;
