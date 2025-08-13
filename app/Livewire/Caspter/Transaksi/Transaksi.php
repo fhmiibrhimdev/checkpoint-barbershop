@@ -72,8 +72,8 @@ class Transaksi extends Component
     public function mount(GlobalDataService $globalDataService)
     {
         $this->initializeServices($globalDataService);
-        $this->loadMasterData();
         $this->initializeUserData();
+        $this->loadMasterData();
         $this->resetInputFields();
     }
 
@@ -197,30 +197,21 @@ class Transaksi extends Component
             ->join('kategori_produk as kp', 'kp.id', '=', 'p.id_kategori')
             ->leftJoin('komisi as k', 'k.id_produk', '=', 'p.id')
             ->where('p.id_cabang', $id_cabang)
-            ->whereRaw("LOWER(TRIM(kp.nama_kategori)) <> 'produk umum'")
             ->where(function ($query) {
-                // Filter untuk Jasa Barbershop & Treatment (wajib ada komisi)
-                $query->where(function ($q) {
-                    $q->whereIn('kp.nama_kategori', ['Jasa Barbershop', 'Treatment'])
-                        ->where('k.komisi_persen', '>', 0)
-                        ->whereNotNull('k.komisi_persen')
-                        ->whereNotNull('k.id');
-                })
-                    // Filter untuk kategori lain (selalu tampil)
-                    ->orWhereNotIn('kp.nama_kategori', ['Jasa Barbershop', 'Treatment']);
-            })
-            ->where(function ($query) {
-                // Filter stock untuk produk
-                $query->where(function ($q) {
-                    $q->where('kp.nama_kategori', 'Produk Barbershop')
-                        ->where('p.stock', '>', 0);
-                })
+                $query
+                    // 1. Jasa Barbershop (komisi wajib)
                     ->orWhere(function ($q) {
-                        $q->where('kp.nama_kategori', 'Produk Umum')
-                            ->where('p.stock', '>', 0);
+                        $q->whereIn('kp.nama_kategori', ['Jasa Barbershop', 'Treatment'])
+                            ->where('k.id_karyawan', $this->id_karyawan)
+                            ->where('k.komisi_persen', '>', 0)
+                            ->whereNotNull('k.komisi_persen')
+                            ->whereNotNull('k.id');
                     })
-                    // Untuk kategori selain produk, tidak perlu cek stock
-                    ->orWhereNotIn('kp.nama_kategori', ['Produk Barbershop', 'Produk Umum']);
+                    // 2. Produk Barbershop (stok wajib > 0, komisi bebas)
+                    ->orWhere(function ($q) {
+                        $q->where('kp.nama_kategori', 'Produk Barbershop')
+                            ->where('p.stock', '>', 0);
+                    });
             })
             ->get();
     }

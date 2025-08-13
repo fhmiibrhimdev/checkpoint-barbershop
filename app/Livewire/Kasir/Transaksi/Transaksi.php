@@ -83,16 +83,6 @@ class Transaksi extends Component
      */
     private function initializeBasicData()
     {
-        // Ambil cabang user yang sedang login
-        $id_cabang = Auth::user()->id_cabang;
-        $this->id_cabang = $id_cabang;
-        $this->filter_id_cabang = $id_cabang;
-
-        // Load data master
-        $this->pelanggans = $this->globalDataService->getPelanggansCustom($this->id_cabang);
-        $this->produks = $this->loadProdukAndKategori($this->id_cabang);
-        $this->pembayarans = $this->globalDataService->getMetodePembayaran();
-
         // Set ID user dan karyawan
         $user = Auth::user();
         $this->id_user = $user->id;
@@ -101,6 +91,16 @@ class Transaksi extends Component
         $this->id_karyawan = DB::table('daftar_karyawan')
             ->where('id_user', Auth::id())
             ->value('id');
+
+        // Ambil cabang user yang sedang login
+        $id_cabang = Auth::user()->id_cabang;
+        $this->id_cabang = $id_cabang;
+        $this->filter_id_cabang = $id_cabang;
+
+        // Load data master
+        $this->pelanggans = $this->globalDataService->getPelanggansCustom($this->id_cabang);
+        $this->pembayarans = $this->globalDataService->getMetodePembayaran();
+        $this->produks = $this->loadProdukAndKategori($this->id_cabang);
     }
 
     /**
