@@ -331,7 +331,7 @@ class Piutang extends Component
 
     private function resetInputFields()
     {
-        $this->tanggal_bayar = date('Y-m-d');
+        $this->tanggal_bayar = date('Y-m-d H:i:s');
         $this->jumlah_bayar = '0';
         $this->keterangan = '-';
         $this->id_metode_pembayaran = '';

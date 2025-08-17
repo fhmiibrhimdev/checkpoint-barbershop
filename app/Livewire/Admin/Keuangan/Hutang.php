@@ -450,13 +450,13 @@ class Hutang extends Component
     private function resetInputFields()
     {
         if ($this->id_hutang) {
-            $this->tanggal_bayar       = date('Y-m-d');
+            $this->tanggal_bayar       = date('Y-m-d H:i:s');
             $this->jumlah_bayar              = '0';
             $this->keterangan          = '-';
             $this->id_metode_pembayaran = '';
             $this->created_by          = Auth::user()->id;
         } else {
-            $this->tanggal_beli        = date('Y-m-d');
+            $this->tanggal_beli        = date('Y-m-d H:i:s');
             $this->total_tagihan       = '0';
             $this->total_dibayarkan    = '0';
             $this->sisa_hutang         = '0';

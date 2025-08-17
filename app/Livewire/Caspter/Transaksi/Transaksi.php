@@ -4,9 +4,11 @@ namespace App\Livewire\Caspter\Transaksi;
 
 use Carbon\Carbon;
 use App\Models\Kas;
+use App\Models\Piutang;
 use Livewire\Component;
 use App\Models\CashOnBank;
 use Livewire\WithPagination;
+use App\Models\PiutangCounter;
 use Livewire\Attributes\Title;
 use App\Models\DetailTransaksi;
 use App\Models\TransaksiCounter;
@@ -295,6 +297,18 @@ class Transaksi extends Component
             $transaksi = $this->createTransaksi();
             $this->processCartItems($transaksi);
             $this->syncSetoranTransferHarian();
+
+            if ($transaksi->status == "2") {
+                Piutang::create([
+                    'no_referensi' => $this->generateNoPiutang($this->filter_id_cabang),
+                    'id_transaksi' => $transaksi->id,
+                    'tanggal_bayar' => date('Y-m-d H:i:s'),
+                    'jumlah_bayar' => '0',
+                    'keterangan'   => '-',
+                    'id_metode_pembayaran' => '1',
+                ]);
+            }
+
 
             DB::commit();
 
@@ -1191,6 +1205,33 @@ class Transaksi extends Component
             $tglFormat = $tanggal->format('dmy');
 
             return "TRX/{$id_cabang}/{$tglFormat}/{$nomorPadded}";
+        });
+    }
+
+    public function generateNoPiutang($id_cabang)
+    {
+        return DB::transaction(function () use ($id_cabang) {
+            $tanggal = Carbon::now()->startOfDay();
+
+            $counter = PiutangCounter::where('id_cabang', $id_cabang)
+                ->whereDate('tanggal', $tanggal)
+                ->lockForUpdate()
+                ->first();
+
+            if (!$counter) {
+                $counter = PiutangCounter::create([
+                    'id_cabang' => $id_cabang,
+                    'tanggal' => $tanggal,
+                    'nomor_terakhir' => 1,
+                ]);
+            } else {
+                $counter->increment('nomor_terakhir');
+            }
+
+            $nomorUrut = str_pad($counter->nomor_terakhir, 3, '0', STR_PAD_LEFT);
+            $tglFormat = $tanggal->format('dmy');
+
+            return "PIUT/{$id_cabang}/{$tglFormat}/{$nomorUrut}";
         });
     }
 

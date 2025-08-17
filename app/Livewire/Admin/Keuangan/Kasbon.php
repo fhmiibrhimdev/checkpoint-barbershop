@@ -483,8 +483,8 @@ class Kasbon extends Component
     {
         $this->jumlah              = '0';
         $this->keterangan          = '-';
-        $this->tgl_pengajuan       = date('Y-m-d');
-        $this->tgl_disetujui       = date('Y-m-d');
+        $this->tgl_pengajuan       = date('Y-m-d H:i:s');
+        $this->tgl_disetujui       = date('Y-m-d H:i:s');
         $this->status              = 'disetujui';
         $this->metode_input        = 'manual';
     }

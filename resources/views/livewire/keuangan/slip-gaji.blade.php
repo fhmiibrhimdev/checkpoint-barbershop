@@ -47,13 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data->groupBy('nama_cabang') as $result)
-                                <tr>
-                                    <td class="tw-text-sm tw-tracking-wider" colspan="10">
-                                        <b>Lokasi: {{ $result[0]->nama_cabang }}</b>
-                                    </td>
-                                </tr>
-                                @foreach ($result as $row)
+                                @forelse ($data as $row)
                                 <tr class='text-center'>
                                     <td class='tw-whitespace-nowrap'>{{ $loop->index + 1 }}</td>
                                     <td class='tw-whitespace-nowrap text-left'>{{ $row->periode_mulai }} <span
@@ -87,12 +81,11 @@
                                         </button>
                                     </td>
                                 </tr>
-                                @endforeach
                                 {{-- Tambahkan ini untuk total gaji per cabang --}}
                                 <tr>
                                     <td colspan="4" class="tw-font-bold text-right text-black">Total Gaji Keseluruhan:
                                     </td>
-                                    <td class="tw-font-bold text-left">@money($result->sum('total_gaji'))</td>
+                                    <td class="tw-font-bold text-left">@money($row->sum('total_gaji'))</td>
                                     <td colspan="2"></td>
                                 </tr>
                                 @empty

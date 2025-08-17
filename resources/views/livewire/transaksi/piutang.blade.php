@@ -158,7 +158,8 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="tanggal_bayar">Tanggal Dibayar</label>
-                            <input type="date" wire:model="tanggal_bayar" id="tanggal_bayar" class="form-control">
+                            <input type="datetime-local" wire:model="tanggal_bayar" id="tanggal_bayar"
+                                class="form-control">
                             @error('tanggal_bayar')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">

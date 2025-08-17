@@ -51,7 +51,7 @@ class CashOnBank extends Component
         $this->cabangs           = $this->globalDataService->getCabangs();
         $this->id_cabang         = $this->globalDataService->getCabangs()->first()->id ?? '';
         $this->filter_id_cabang = $this->cabangs->first()->id ?? '';
-        $this->tanggal           = date('Y-m-d');
+        $this->tanggal           = date('Y-m-d H:i:s');
         $this->no_referensi      = '';
         $this->jenis             = '';
         $this->jumlah            = '0';

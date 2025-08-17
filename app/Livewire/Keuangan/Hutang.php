@@ -106,9 +106,8 @@ class Hutang extends Component
             return view('livewire.keuangan.hutang', compact('data'));
         }
 
-        $data = ModelsHutang::select('hutang.*', 'daftar_supplier.nama_supplier', 'cabang_lokasi.nama_cabang')
+        $data = ModelsHutang::select('hutang.*', 'daftar_supplier.nama_supplier')
             ->join('daftar_supplier', 'daftar_supplier.id', '=', 'hutang.id_supplier')
-            ->join('cabang_lokasi', 'cabang_lokasi.id', '=', 'daftar_supplier.id_cabang')
             ->where(function ($query) use ($search) {
                 $query->where('no_referensi', 'LIKE', $search)
                     ->orWhere('daftar_supplier.nama_supplier', 'LIKE', $search);
@@ -451,13 +450,13 @@ class Hutang extends Component
     private function resetInputFields()
     {
         if ($this->id_hutang) {
-            $this->tanggal_bayar       = date('Y-m-d');
+            $this->tanggal_bayar       = date('Y-m-d H:i:s');
             $this->jumlah_bayar              = '0';
             $this->keterangan          = '-';
             $this->id_metode_pembayaran = '';
             $this->created_by          = Auth::user()->id;
         } else {
-            $this->tanggal_beli        = date('Y-m-d');
+            $this->tanggal_beli        = date('Y-m-d H:i:s');
             $this->total_tagihan       = '0';
             $this->total_dibayarkan    = '0';
             $this->sisa_hutang         = '0';

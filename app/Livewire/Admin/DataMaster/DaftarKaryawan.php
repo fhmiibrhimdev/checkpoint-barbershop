@@ -276,7 +276,7 @@ class DaftarKaryawan extends Component
         $this->name                = '';
         $this->email               = '';
         $this->password            = '1';
-        $this->tgl_lahir           = date('Y-m-d');
+        $this->tgl_lahir           = date('Y-m-d H:i:s');
         $this->jk                  = '-';
         $this->alamat              = '-';
         $this->no_telp             = '62';

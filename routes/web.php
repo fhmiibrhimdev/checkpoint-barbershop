@@ -1,70 +1,80 @@
 <?php
 
+use App\Livewire\Test;
 use App\Livewire\Example\Example;
-use App\Livewire\Profile\Profile;
-use App\Livewire\Dashboard\Dashboard;
-use Illuminate\Support\Facades\Route;
-use App\Livewire\Control\User as ControlUser;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
-use App\Livewire\Admin\DataPendukung\KategoriKeuangan as AdminKategoriKeuangan;
-use App\Livewire\Admin\DataPendukung\KategoriSatuan as AdminKategoriSatuan;
-
-use App\Livewire\Admin\DataMaster\Produk as AdminProduk;
-use App\Livewire\Admin\DataMaster\DaftarKaryawan as AdminDaftarKaryawan;
-use App\Livewire\Admin\DataMaster\DaftarPelanggan as AdminDaftarPelanggan;
-use App\Livewire\Admin\DataMaster\DaftarSupplier as AdminDaftarSupplier;
-use App\Livewire\Admin\Keuangan\CashOnBank as AdminCashOnBank;
-use App\Livewire\Admin\Keuangan\Hutang as AdminHutang;
-use App\Livewire\Admin\Keuangan\Kasbon as AdminKasbon;
-use App\Livewire\Admin\Keuangan\KasKeluar as AdminKasKeluar;
-use App\Livewire\Admin\Keuangan\KasMasuk as AdminKasMasuk;
-use App\Livewire\Admin\Keuangan\Piutang as AdminPiutang;
-use App\Livewire\Admin\Keuangan\SlipGaji as AdminSlipGaji;
-use App\Livewire\Admin\Persediaan\SaldoAwalItem as AdminSaldoAwalItem;
-use App\Livewire\Admin\Persediaan\StokMasuk as AdminStokMasuk;
-use App\Livewire\Admin\Persediaan\StokKeluar as AdminStokKeluar;
-use App\Livewire\Admin\Persediaan\StokOpname as AdminStokOpname;
-use App\Livewire\Admin\Persediaan\KartuStok as AdminKartuStok;
-use App\Livewire\Admin\Transaksi\JadwalBooking as AdminJadwalBooking;
-use App\Livewire\Admin\Transaksi\Transaksi as AdminTransaksi;
-use App\Livewire\Capster\Transaksi\RiwayatTransaksi as RiwayatTransaksi;
-use App\Livewire\Caspter\Transaksi\JadwalBooking as CapsterJadwalBooking;
-use App\Livewire\Caspter\Transaksi\Transaksi as CapsterTransaksi;
-use App\Livewire\DataMaster\DaftarKaryawan;
-use App\Livewire\DataMaster\DaftarPelanggan;
-use App\Livewire\DataMaster\DaftarSupplier;
-use App\Livewire\DataMaster\Produk;
-use App\Livewire\DataPendukung\CabangLokasi;
-use App\Livewire\DataPendukung\KategoriKeuangan;
-use App\Livewire\DataPendukung\KategoriPembayaran;
-use App\Livewire\DataPendukung\KategoriProduk;
-use App\Livewire\DataPendukung\KategoriSatuan;
-use App\Livewire\Kasir\Keuangan\CashOnBank as KasirCashOnBank;
-use App\Livewire\Kasir\Keuangan\Hutang as KasirHutang;
-use App\Livewire\Kasir\Keuangan\KasKeluar as KasirKasKeluar;
-use App\Livewire\Kasir\Keuangan\KasMasuk as KasirKasMasuk;
-use App\Livewire\Kasir\Keuangan\Piutang as KasirPiutang;
-use App\Livewire\Kasir\Persediaan\KartuStok as KasirKartuStok;
-use App\Livewire\Kasir\Persediaan\StokKeluar as KasirStokKeluar;
-use App\Livewire\Kasir\Persediaan\StokMasuk as KasirStokMasuk;
-use App\Livewire\Kasir\Transaksi\Transaksi as KasirTransaksi;
-use App\Livewire\Keuangan\Piutang;
-use App\Livewire\Keuangan\CashOnBank;
 use App\Livewire\Keuangan\Hutang;
 use App\Livewire\Keuangan\Kasbon;
-use App\Livewire\Keuangan\KasKeluar;
+use App\Livewire\Profile\Profile;
+use App\Livewire\Keuangan\Piutang;
+
+use App\Livewire\DataMaster\Produk;
 use App\Livewire\Keuangan\KasMasuk;
+
 use App\Livewire\Keuangan\SlipGaji;
-use App\Livewire\Persediaan\KartuStok;
-use App\Livewire\Persediaan\SaldoAwalItem;
-use App\Livewire\Persediaan\StokKeluar;
-use App\Livewire\Persediaan\StokMasuk;
-use App\Livewire\Persediaan\StokOpname;
-use App\Livewire\Test;
-use App\Livewire\Transaksi\JadwalBooking;
+use App\Livewire\Keuangan\KasKeluar;
+use App\Livewire\Laporan\LaporanHpp;
+use App\Livewire\Dashboard\Dashboard;
+use App\Livewire\Keuangan\CashOnBank;
 use App\Livewire\Transaksi\PrintNota;
 use App\Livewire\Transaksi\Transaksi;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Laporan\LaporanOmset;
+use App\Livewire\Persediaan\KartuStok;
+use App\Livewire\Persediaan\StokMasuk;
+use App\Livewire\Persediaan\StokKeluar;
+use App\Livewire\Persediaan\StokOpname;
+use App\Livewire\Laporan\LaporanLabaRugi;
+use App\Livewire\Transaksi\JadwalBooking;
+use App\Livewire\Laporan\LaporanPembukuan;
+use App\Livewire\Persediaan\SaldoAwalItem;
+use App\Livewire\DataMaster\DaftarKaryawan;
+use App\Livewire\DataMaster\DaftarSupplier;
+use App\Livewire\DataMaster\DaftarPelanggan;
+use App\Livewire\DataPendukung\CabangLokasi;
+use App\Livewire\Laporan\LaporanPengeluaran;
+use App\Livewire\Control\User as ControlUser;
+use App\Livewire\DataPendukung\KategoriProduk;
+use App\Livewire\DataPendukung\KategoriSatuan;
+use App\Http\Controllers\Laporan\HppController;
+use App\Livewire\DataPendukung\KategoriKeuangan;
+use App\Http\Controllers\Laporan\OmsetController;
+use App\Livewire\DataPendukung\KategoriPembayaran;
+use App\Http\Controllers\Laporan\LabaRugiController;
+use App\Http\Controllers\Laporan\PembukuanController;
+use App\Livewire\Admin\Keuangan\Hutang as AdminHutang;
+use App\Livewire\Admin\Keuangan\Kasbon as AdminKasbon;
+use App\Livewire\Kasir\Keuangan\Hutang as KasirHutang;
+use App\Http\Controllers\Laporan\PengeluaranController;
+use App\Livewire\Admin\DataMaster\Produk as AdminProduk;
+use App\Livewire\Admin\Keuangan\Piutang as AdminPiutang;
+use App\Livewire\Kasir\Keuangan\Piutang as KasirPiutang;
+use App\Livewire\Admin\Keuangan\KasMasuk as AdminKasMasuk;
+use App\Livewire\Admin\Keuangan\SlipGaji as AdminSlipGaji;
+use App\Livewire\Kasir\Keuangan\KasMasuk as KasirKasMasuk;
+use App\Livewire\Admin\Keuangan\KasKeluar as AdminKasKeluar;
+use App\Livewire\Kasir\Keuangan\KasKeluar as KasirKasKeluar;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Livewire\Admin\Transaksi\Transaksi as AdminTransaksi;
+use App\Livewire\Kasir\Transaksi\Transaksi as KasirTransaksi;
+use App\Livewire\Admin\Keuangan\CashOnBank as AdminCashOnBank;
+use App\Livewire\Admin\Persediaan\KartuStok as AdminKartuStok;
+use App\Livewire\Admin\Persediaan\StokMasuk as AdminStokMasuk;
+use App\Livewire\Kasir\Keuangan\CashOnBank as KasirCashOnBank;
+use App\Livewire\Kasir\Persediaan\KartuStok as KasirKartuStok;
+use App\Livewire\Kasir\Persediaan\StokMasuk as KasirStokMasuk;
+use App\Livewire\Admin\Persediaan\StokKeluar as AdminStokKeluar;
+use App\Livewire\Admin\Persediaan\StokOpname as AdminStokOpname;
+use App\Livewire\Kasir\Persediaan\StokKeluar as KasirStokKeluar;
+use App\Livewire\Caspter\Transaksi\Transaksi as CapsterTransaksi;
+use App\Livewire\Admin\Transaksi\JadwalBooking as AdminJadwalBooking;
+use App\Livewire\Admin\Persediaan\SaldoAwalItem as AdminSaldoAwalItem;
+use App\Livewire\Admin\DataMaster\DaftarKaryawan as AdminDaftarKaryawan;
+use App\Livewire\Admin\DataMaster\DaftarSupplier as AdminDaftarSupplier;
+use App\Livewire\Capster\Transaksi\RiwayatTransaksi as RiwayatTransaksi;
+use App\Livewire\Caspter\Transaksi\JadwalBooking as CapsterJadwalBooking;
+use App\Livewire\Admin\DataMaster\DaftarPelanggan as AdminDaftarPelanggan;
+use App\Livewire\Admin\DataPendukung\KategoriSatuan as AdminKategoriSatuan;
+use App\Livewire\Admin\DataPendukung\KategoriKeuangan as AdminKategoriKeuangan;
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
@@ -80,6 +90,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/keuangan/piutang/{id_transaksi}', Piutang::class);
     Route::get('/transaksi/print-nota/{id_transaksi}', PrintNota::class);
     Route::get('/transaksi/riwayat-transaksi', RiwayatTransaksi::class);
+
+    Route::get('/laporan/laporan-omset', LaporanOmset::class);
+    Route::get('/laporan/laporan-hpp', LaporanHpp::class);
+    Route::get('/laporan/laporan-pengeluaran', LaporanPengeluaran::class);
+    Route::get('/laporan/laporan-pembukuan', LaporanPembukuan::class);
+    Route::get('/laporan/laporan-laba-rugi', LaporanLabaRugi::class);
+
+    Route::get('/laporan/laporan-omset/pdf', [OmsetController::class, 'exportPdf'])
+        ->name('laporan.omset.pdf');
+    Route::get('/laporan/laporan-hpp/pdf', [HppController::class, 'exportPdf'])
+        ->name('laporan.hpp.pdf');
+    Route::get('/laporan/laporan-pengeluaran/pdf', [PengeluaranController::class, 'exportPdf'])
+        ->name('laporan.pengeluaran.pdf');
+    Route::get('/laporan/laporan-pembukuan/pdf', [PembukuanController::class, 'exportPdf'])
+        ->name('laporan.pembukuan.pdf');
+    Route::get('/laporan/laporan-laba-rugi/pdf', [LabaRugiController::class, 'exportPdf'])
+        ->name('laporan.laba-rugi.pdf');
 });
 
 Route::group(['middleware' => ['auth', 'role:direktur']], function () {

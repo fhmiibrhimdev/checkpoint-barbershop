@@ -74,8 +74,7 @@ class SaldoAwalItem extends Component
         $this->searchResetPage();
         $search = '%' . $this->searchTerm . '%';
 
-        $data = DB::table('persediaan')->select('persediaan.id', 'persediaan.tanggal', 'persediaan.qty', 'persediaan.keterangan', 'cabang_lokasi.nama_cabang', 'produk.nama_item', 'users.name')
-            ->join('cabang_lokasi', 'cabang_lokasi.id', 'persediaan.id_cabang')
+        $data = DB::table('persediaan')->select('persediaan.id', 'persediaan.tanggal', 'persediaan.qty', 'persediaan.keterangan', 'produk.nama_item', 'users.name')
             ->join('produk', 'produk.id', 'persediaan.id_produk')
             ->join('users', 'users.id', 'persediaan.id_user')
             ->where('persediaan.status', 'Balance')

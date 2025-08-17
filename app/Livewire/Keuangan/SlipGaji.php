@@ -79,9 +79,8 @@ class SlipGaji extends Component
         $this->searchResetPage();
         $search = '%' . $this->searchTerm . '%';
 
-        $data = ModelsSlipGaji::select('slip_gaji.id', 'slip_gaji.no_referensi', 'slip_gaji.periode_mulai', 'slip_gaji.periode_selesai', 'slip_gaji.total_gaji', 'slip_gaji.status', 'users.name as nama_karyawan', 'cabang_lokasi.nama_cabang')
+        $data = ModelsSlipGaji::select('slip_gaji.id', 'slip_gaji.no_referensi', 'slip_gaji.periode_mulai', 'slip_gaji.periode_selesai', 'slip_gaji.total_gaji', 'slip_gaji.status', 'users.name as nama_karyawan')
             ->join('daftar_karyawan', 'slip_gaji.id_karyawan', '=', 'daftar_karyawan.id')
-            ->join('cabang_lokasi', 'cabang_lokasi.id', 'daftar_karyawan.id_cabang')
             ->join('users', 'daftar_karyawan.id_user', '=', 'users.id')
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', $search);

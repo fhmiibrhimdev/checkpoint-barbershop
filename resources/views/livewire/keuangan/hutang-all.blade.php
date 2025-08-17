@@ -50,13 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data->groupBy('nama_cabang') as $result)
-                                <tr>
-                                    <td class="tw-text-sm tw-tracking-wider" colspan="10">
-                                        <b>Lokasi: {{ $result[0]->nama_cabang }}</b>
-                                    </td>
-                                </tr>
-                                @foreach ($result as $row)
+                                @forelse ($data as $row)
                                 <tr class='text-center'>
                                     <td class='tw-whitespace-nowrap'>{{ $loop->index + 1 }}</td>
                                     <td class='tw-whitespace-nowrap text-left'>
@@ -91,7 +85,6 @@
                                         </button>
                                     </td>
                                 </tr>
-                                @endforeach
                                 @empty
                                 <tr>
                                     <td colspan='10' class='text-center'>No data available in the table</td>

@@ -271,7 +271,7 @@ class KasMasuk extends Component
     private function resetInputFields()
     {
         $this->no_referensi        = '';
-        $this->tanggal             = date('Y-m-d');
+        $this->tanggal             = date('Y-m-d H:i:s');
         if ($this->id_kategori_keuangan == 1) {
             $this->keterangan      = 'SETOR TUNAI';
         } else {

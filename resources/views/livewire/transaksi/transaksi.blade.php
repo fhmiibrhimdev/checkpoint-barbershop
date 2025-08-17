@@ -118,13 +118,8 @@
                     </div>
                 </div>
             </div>
-            @forelse ($data->groupBy('nama_cabang') as $item)
-            <div
-                class="tw-font-semibold tw-text-[#34395e] tw-tracking-[0.5px] tw-text-base tw-mt-6 tw-mb-4 tw-px-4 lg:tw-px-0">
-                <p>{{ $item[0]->nama_cabang }}</p>
-            </div>
             <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-3 tw-gap-x-4 tw-gap-y-4 tw-px-4 lg:tw-px-0 ">
-                @foreach ($item as $row)
+                @forelse ($data as $row)
                 <div class="tw-bg-white tw-rounded-lg tw-shadow-md tw-shadow-gray-300 tw-flex tw-flex-col tw-h-full">
 
                     {{-- HEADER --}}
@@ -202,11 +197,10 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                No data available
+                @endforelse
             </div>
-            @empty
-            No data available
-            @endforelse
 
             <div class="card tw-mt-6">
                 <div class="card-body tw-py-0 tw-mb-6 tw-px-4 tw-items-center">
@@ -371,6 +365,7 @@
                             <p class="">Total</p>
                             <p class="tw-font-semibold tw-text-lg">@money($total_akhir)</p>
                         </div>
+                        @if (!Auth::user()->hasRole('direktur'))
                         @if ($isEditing)
                         @if ($status == "1" && $jumlah_dibayarkan == 0) {{-- Kalau status: booking, dan belum lunas --}}
                         <div class="row no-gutters">
@@ -424,6 +419,7 @@
                         <button wire:click.prevent="formPembayaran()"
                             class="btn btn-primary tw-bg-blue-500 form-control tw-py-2" data-toggle="modal"
                             data-target="#formPembayaranModal">Bayar</button>
+                        @endif
                         @endif
                     </div>
                 </form>

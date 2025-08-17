@@ -244,7 +244,7 @@ class KasKeluar extends Component
     private function resetInputFields()
     {
         $this->no_referensi        = '';
-        $this->tanggal             = date('Y-m-d');
+        $this->tanggal             = date('Y-m-d H:i:s');
         $this->keterangan          = '';
         $this->jumlah              = '0';
     }

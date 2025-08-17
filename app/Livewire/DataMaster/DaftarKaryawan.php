@@ -24,7 +24,6 @@ class DaftarKaryawan extends Component
     ];
 
     protected $rules = [
-        'id_cabang'           => 'required',
         'role_id'             => 'required',
         'name'                => 'required',
         'email'               => 'required|email|unique:users',
@@ -278,7 +277,7 @@ class DaftarKaryawan extends Component
         $this->name                = '';
         $this->email               = '';
         $this->password            = '1';
-        $this->tgl_lahir           = date('Y-m-d');
+        $this->tgl_lahir           = date('Y-m-d H:i:s');
         $this->jk                  = '-';
         $this->alamat              = '-';
         $this->no_telp             = '62';

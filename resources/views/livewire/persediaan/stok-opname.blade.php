@@ -50,13 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data->groupBy('nama_cabang') as $row)
-                                <tr>
-                                    <td class="tw-text-sm tw-tracking-wider" colspan="10">
-                                        <b>Lokasi: {{ $row[0]->nama_cabang }}</b>
-                                    </td>
-                                </tr>
-                                @foreach ($row as $result)
+                                @forelse ($data as $result)
                                 <tr class='text-center'>
                                     <td class='tw-whitespace-nowrap'>
                                         {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
@@ -74,7 +68,6 @@
                                         </button>
                                     </td>
                                 </tr>
-                                @endforeach
                                 @empty
                                 <tr>
                                     <td colspan='13' class='text-center'>No data available in the table</td>

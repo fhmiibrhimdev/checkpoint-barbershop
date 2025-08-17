@@ -20,6 +20,7 @@
             -ms-overflow-style: none !important;
             scrollbar-width: none !important;
         }
+
     </style>
 
     <!-- Template CSS -->
@@ -44,8 +45,7 @@
                 </form>
                 <ul class="navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" data-toggle="dropdown"
-                            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <div class="d-sm-none d-lg-inline-block">Hi, {{ Auth::user()->name }}</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -56,8 +56,7 @@
                             <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <a href="{{ route('logout') }}" class="dropdown-item text-danger has-icon"
-                                    onclick="event.preventDefault();
+                                <a href="{{ route('logout') }}" class="dropdown-item text-danger has-icon" onclick="event.preventDefault();
                                 this.closest('form').submit();">
                                     <i class="far fa-sign-out-alt"></i> Logout
                                 </a>
@@ -76,19 +75,18 @@
                             </a>
                         </li>
                         @php
-                            // Load relasi sekali saja (1 query)
-                            $user = Auth::user()->loadMissing('roles:id,name');
-                            $roles = $user->roles->pluck('name')->all();
+                        // Load relasi sekali saja (1 query)
+                        $user = Auth::user()->loadMissing('roles:id,name');
+                        $roles = $user->roles->pluck('name')->all();
 
-                            $asDirektur = in_array('direktur', $roles, true);
-                            $asAdmin = in_array('admin', $roles, true);
-                            $asKasir = in_array('kasir', $roles, true);
-                            $asCapster = in_array('capster', $roles, true);
+                        $asDirektur = in_array('direktur', $roles, true);
+                        $asAdmin = in_array('admin', $roles, true);
+                        $asKasir = in_array('kasir', $roles, true);
+                        $asCapster = in_array('capster', $roles, true);
                         @endphp
                         {{-- Role: Direktur --}}
                         @if ($asDirektur)
-                            <li
-                                class="nav-item dropdown
+                        <li class="nav-item dropdown
                         {{ request()->is('kategori/produk') ||
                         request()->is('kategori/keuangan') ||
                         request()->is('kategori/pembayaran') ||
@@ -100,45 +98,42 @@
                         request()->is('master-data/daftar-karyawan')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><i
-                                        class="far fa-clone"></i><span>Master Data</span></a>
-                                <ul class="dropdown-menu">
-                                    <div class="dropdown-title">DATA PENDUKUNG</div>
-                                    <li class="nav-item {{ request()->is('cabang-lokasi') ? 'active' : '' }}">
-                                        <a href="/cabang-lokasi" class="nav-link">Cabang Lokasi</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('kategori/produk') ? 'active' : '' }}">
-                                        <a href="/kategori/produk" class="nav-link">Kategori Produk</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('kategori/keuangan') ? 'active' : '' }}">
-                                        <a href="/kategori/keuangan" class="nav-link">Kategori Keuangan</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('kategori/pembayaran') ? 'active' : '' }}">
-                                        <a href="/kategori/pembayaran" class="nav-link">Kategori Pembayaran</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('kategori/satuan') ? 'active' : '' }}">
-                                        <a href="/kategori/satuan" class="nav-link">Kategori Satuan</a>
-                                    </li>
-                                    <div class="dropdown-title">DATA DATA</div>
-                                    <li class="nav-item {{ request()->is('master-data/produk') ? 'active' : '' }}">
-                                        <a href="/master-data/produk" class="nav-link">Produk</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('master-data/daftar-pelanggan') ? 'active' : '' }}">
-                                        <a href="/master-data/daftar-pelanggan" class="nav-link">Daftar Pelanggan</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('master-data/daftar-supplier') ? 'active' : '' }}">
-                                        <a href="/master-data/daftar-supplier" class="nav-link">Daftar Supplier</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('master-data/daftar-karyawan') ? 'active' : '' }}">
-                                        <a href="/master-data/daftar-karyawan" class="nav-link">Daftar Karyawan</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><i
+                                    class="far fa-clone"></i><span>Master Data</span></a>
+                            <ul class="dropdown-menu">
+                                <div class="dropdown-title">DATA PENDUKUNG</div>
+                                <li class="nav-item {{ request()->is('cabang-lokasi') ? 'active' : '' }}">
+                                    <a href="/cabang-lokasi" class="nav-link">Cabang Lokasi</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('kategori/produk') ? 'active' : '' }}">
+                                    <a href="/kategori/produk" class="nav-link">Kategori Produk</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('kategori/keuangan') ? 'active' : '' }}">
+                                    <a href="/kategori/keuangan" class="nav-link">Kategori Keuangan</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('kategori/pembayaran') ? 'active' : '' }}">
+                                    <a href="/kategori/pembayaran" class="nav-link">Kategori Pembayaran</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('kategori/satuan') ? 'active' : '' }}">
+                                    <a href="/kategori/satuan" class="nav-link">Kategori Satuan</a>
+                                </li>
+                                <div class="dropdown-title">DATA DATA</div>
+                                <li class="nav-item {{ request()->is('master-data/produk') ? 'active' : '' }}">
+                                    <a href="/master-data/produk" class="nav-link">Produk</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('master-data/daftar-pelanggan') ? 'active' : '' }}">
+                                    <a href="/master-data/daftar-pelanggan" class="nav-link">Daftar Pelanggan</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('master-data/daftar-supplier') ? 'active' : '' }}">
+                                    <a href="/master-data/daftar-supplier" class="nav-link">Daftar Supplier</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('master-data/daftar-karyawan') ? 'active' : '' }}">
+                                    <a href="/master-data/daftar-karyawan" class="nav-link">Daftar Karyawan</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('persediaan/stok-masuk') ||
                         request()->is('persediaan/stok-keluar') ||
                         request()->is('persediaan/saldo-awal-item') ||
@@ -146,44 +141,39 @@
                         request()->is('persediaan/kartu-stok')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-inventory"></i><span>Persediaan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li
-                                        class="nav-item {{ request()->is('persediaan/saldo-awal-item') ? 'active' : '' }}">
-                                        <a href="/persediaan/saldo-awal-item" class="nav-link">Saldo Awal Item</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('persediaan/stok-masuk') ? 'active' : '' }}">
-                                        <a href="/persediaan/stok-masuk" class="nav-link">Stok Masuk</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('persediaan/stok-keluar') ? 'active' : '' }}">
-                                        <a href="/persediaan/stok-keluar" class="nav-link">Stok Keluar</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('persediaan/stok-opname') ? 'active' : '' }}">
-                                        <a href="/persediaan/stok-opname" class="nav-link">Stok Opname</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('persediaan/kartu-stok') ? 'active' : '' }}">
-                                        <a href="/persediaan/kartu-stok" class="nav-link">Kartu Stok</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-inventory"></i><span>Persediaan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('persediaan/saldo-awal-item') ? 'active' : '' }}">
+                                    <a href="/persediaan/saldo-awal-item" class="nav-link">Saldo Awal Item</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('persediaan/stok-masuk') ? 'active' : '' }}">
+                                    <a href="/persediaan/stok-masuk" class="nav-link">Stok Masuk</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('persediaan/stok-keluar') ? 'active' : '' }}">
+                                    <a href="/persediaan/stok-keluar" class="nav-link">Stok Keluar</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('persediaan/stok-opname') ? 'active' : '' }}">
+                                    <a href="/persediaan/stok-opname" class="nav-link">Stok Opname</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('persediaan/kartu-stok') ? 'active' : '' }}">
+                                    <a href="/persediaan/kartu-stok" class="nav-link">Kartu Stok</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('transaksi/jadwal-booking') || request()->is('transaksi') ? 'active' : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-cash-register"></i><span>Transaksi</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item {{ request()->is('transaksi') ? 'active' : '' }}">
-                                        <a href="/transaksi" class="nav-link">Transaksi</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-cash-register"></i><span>Transaksi</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('transaksi') ? 'active' : '' }}">
+                                    <a href="/transaksi" class="nav-link">Transaksi</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('keuangan/cash-on-bank') ||
                         request()->is('keuangan/pengeluaran') ||
                         request()->is('keuangan/buku-besar') ||
@@ -198,101 +188,88 @@
                         request()->is('keuangan/buku-besar')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-money-bill"></i><span>Keuangan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item {{ request()->is('keuangan/kas-masuk') ? 'active' : '' }}">
-                                        <a href="/keuangan/kas-masuk" class="nav-link">Kas Masuk</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('keuangan/kas-keluar') ? 'active' : '' }}">
-                                        <a href="/keuangan/kas-keluar" class="nav-link">Kas Keluar</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('keuangan/hutang') || request()->is('keuangan/hutang/*') ? 'active' : '' }}">
-                                        <a href="/keuangan/hutang" class="nav-link">Hutang</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('keuangan/piutang') || request()->is('keuangan/piutang/*') ? 'active' : '' }}">
-                                        <a href="/keuangan/piutang" class="nav-link">Piutang</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('keuangan/kasbon') ? 'active' : '' }}">
-                                        <a href="/keuangan/kasbon" class="nav-link">Kasbon</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('keuangan/slip-gaji') ? 'active' : '' }}">
-                                        <a href="/keuangan/slip-gaji" class="nav-link">Slip Gaji</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('keuangan/cash-on-bank') ? 'active' : '' }}">
-                                        <a href="/keuangan/cash-on-bank" class="nav-link">Cash on Bank</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
-                        {{ request()->is('laporan/transaksi') ||
-                        request()->is('laporan/pembayaran-non-tunai') ||
-                        request()->is('laporan/komisi-karyawan') ||
-                        request()->is('laporan/pengeluaran')
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-money-bill"></i><span>Keuangan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('keuangan/kas-masuk') ? 'active' : '' }}">
+                                    <a href="/keuangan/kas-masuk" class="nav-link">Kas Masuk</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('keuangan/kas-keluar') ? 'active' : '' }}">
+                                    <a href="/keuangan/kas-keluar" class="nav-link">Kas Keluar</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('keuangan/hutang') || request()->is('keuangan/hutang/*') ? 'active' : '' }}">
+                                    <a href="/keuangan/hutang" class="nav-link">Hutang</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('keuangan/piutang') || request()->is('keuangan/piutang/*') ? 'active' : '' }}">
+                                    <a href="/keuangan/piutang" class="nav-link">Piutang</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('keuangan/kasbon') ? 'active' : '' }}">
+                                    <a href="/keuangan/kasbon" class="nav-link">Kasbon</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('keuangan/slip-gaji') ? 'active' : '' }}">
+                                    <a href="/keuangan/slip-gaji" class="nav-link">Slip Gaji</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('keuangan/cash-on-bank') ? 'active' : '' }}">
+                                    <a href="/keuangan/cash-on-bank" class="nav-link">Cash on Bank</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
+                        {{ request()->is('laporan/laporan-omset') ||
+                        request()->is('laporan/laporan-hpp') ||
+                        request()->is('laporan/laporan-pengeluaran') ||
+                        request()->is('laporan/laporan-pembukuan') ||
+                        request()->is('laporan/laporan-laba-rugi')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-files"></i><span>Laporan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item {{ request()->is('laporan/transaksi') ? 'active' : '' }}">
-                                        <a href="/laporan/transaksi" class="nav-link">Laporan Transaksi</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('laporan/pembayaran-non-tunai') ? 'active' : '' }}">
-                                        <a href="/laporan/pembayaran-non-tunai" class="nav-link">Laporan Pembayaran
-                                            Non
-                                            Tunai</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('laporan/komisi-karyawan') ? 'active' : '' }}">
-                                        <a href="/laporan/komisi-karyawan" class="nav-link">Laporan Komisi
-                                            Karyawan</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('laporan/pengeluaran') ? 'active' : '' }}">
-                                        <a href="/laporan/pengeluaran" class="nav-link">Laporan Pengeluaran</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-files"></i><span>Laporan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('laporan/laporan-omset') ? 'active' : '' }}">
+                                    <a href="/laporan/laporan-omset" class="nav-link">Laporan Omset</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('laporan/laporan-hpp') ? 'active' : '' }}">
+                                    <a href="/laporan/laporan-hpp" class="nav-link">Laporan HPP</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('laporan/laporan-pengeluaran') ? 'active' : '' }}">
+                                    <a href="/laporan/laporan-pengeluaran" class="nav-link">Laporan Pengeluaran</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('laporan/laporan-pembukuan') ? 'active' : '' }}">
+                                    <a href="/laporan/laporan-pembukuan" class="nav-link">Laporan Pembukuan</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('laporan/laporan-laba-rugi') ? 'active' : '' }}">
+                                    <a href="/laporan/laporan-laba-rugi" class="nav-link">Laporan Laba Rugi</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('pengaturan/profile-usaha') ||
-                        request()->is('pengaturan/reset-no-transaksi') ||
                         request()->is('pengaturan/backup-restore') ||
                         request()->is('pengaturan/control-user')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-cogs"></i><span>Pengaturan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li
-                                        class="nav-item {{ request()->is('pengaturan/profile-usaha') ? 'active' : '' }}">
-                                        <a href="/pengaturan/profile-usaha" class="nav-link">Profile Usaha</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('pengaturan/reset-no-transaksi') ? 'active' : '' }}">
-                                        <a href="/pengaturan/reset-no-transaksi" class="nav-link">Reset No.
-                                            Transaksi</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('pengaturan/backup-restore') ? 'active' : '' }}">
-                                        <a href="/pengaturan/backup-restore" class="nav-link">Backup & Restore</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('pengaturan/control-user') ? 'active' : '' }}">
-                                        <a href="/pengaturan/control-user" class="nav-link">Control User</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            {{-- Role: Admin --}}
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-cogs"></i><span>Pengaturan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('pengaturan/profile-usaha') ? 'active' : '' }}">
+                                    <a href="/pengaturan/profile-usaha" class="nav-link">Profile Usaha</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('pengaturan/backup-restore') ? 'active' : '' }}">
+                                    <a href="/pengaturan/backup-restore" class="nav-link">Backup & Restore</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('pengaturan/control-user') ? 'active' : '' }}">
+                                    <a href="/pengaturan/control-user" class="nav-link">Control User</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{-- Role: Admin --}}
                         @elseif ($asAdmin)
-                            <li
-                                class="nav-item dropdown
+                        <li class="nav-item dropdown
                         {{ request()->is('admin/kategori/produk') ||
                         request()->is('admin/kategori/keuangan') ||
                         request()->is('admin/kategori/pembayaran') ||
@@ -304,41 +281,38 @@
                         request()->is('admin/master-data/daftar-karyawan')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><i
-                                        class="far fa-clone"></i><span>Master Data</span></a>
-                                <ul class="dropdown-menu">
-                                    <div class="dropdown-title">DATA PENDUKUNG</div>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/kategori/keuangan') ? 'active' : '' }}">
-                                        <a href="/admin/kategori/keuangan" class="nav-link">Kategori Keuangan</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('admin/kategori/satuan') ? 'active' : '' }}">
-                                        <a href="/admin/kategori/satuan" class="nav-link">Kategori Satuan</a>
-                                    </li>
-                                    <div class="dropdown-title">DATA DATA</div>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/master-data/produk') ? 'active' : '' }}">
-                                        <a href="/admin/master-data/produk" class="nav-link">Produk</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/master-data/daftar-pelanggan') ? 'active' : '' }}">
-                                        <a href="/admin/master-data/daftar-pelanggan" class="nav-link">Daftar
-                                            Pelanggan</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/master-data/daftar-supplier') ? 'active' : '' }}">
-                                        <a href="/admin/master-data/daftar-supplier" class="nav-link">Daftar
-                                            Supplier</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/master-data/daftar-karyawan') ? 'active' : '' }}">
-                                        <a href="/admin/master-data/daftar-karyawan" class="nav-link">Daftar
-                                            Karyawan</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><i
+                                    class="far fa-clone"></i><span>Master Data</span></a>
+                            <ul class="dropdown-menu">
+                                <div class="dropdown-title">DATA PENDUKUNG</div>
+                                <li class="nav-item {{ request()->is('admin/kategori/keuangan') ? 'active' : '' }}">
+                                    <a href="/admin/kategori/keuangan" class="nav-link">Kategori Keuangan</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('admin/kategori/satuan') ? 'active' : '' }}">
+                                    <a href="/admin/kategori/satuan" class="nav-link">Kategori Satuan</a>
+                                </li>
+                                <div class="dropdown-title">DATA DATA</div>
+                                <li class="nav-item {{ request()->is('admin/master-data/produk') ? 'active' : '' }}">
+                                    <a href="/admin/master-data/produk" class="nav-link">Produk</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('admin/master-data/daftar-pelanggan') ? 'active' : '' }}">
+                                    <a href="/admin/master-data/daftar-pelanggan" class="nav-link">Daftar
+                                        Pelanggan</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('admin/master-data/daftar-supplier') ? 'active' : '' }}">
+                                    <a href="/admin/master-data/daftar-supplier" class="nav-link">Daftar
+                                        Supplier</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('admin/master-data/daftar-karyawan') ? 'active' : '' }}">
+                                    <a href="/admin/master-data/daftar-karyawan" class="nav-link">Daftar
+                                        Karyawan</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('admin/persediaan/stok-masuk') ||
                         request()->is('admin/persediaan/stok-keluar') ||
                         request()->is('admin/persediaan/saldo-awal-item') ||
@@ -346,47 +320,44 @@
                         request()->is('admin/persediaan/kartu-stok')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-inventory"></i><span>Persediaan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li
-                                        class="nav-item {{ request()->is('admin/persediaan/saldo-awal-item') ? 'active' : '' }}">
-                                        <a href="/admin/persediaan/saldo-awal-item" class="nav-link">Saldo Awal
-                                            Item</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/persediaan/stok-masuk') ? 'active' : '' }}">
-                                        <a href="/admin/persediaan/stok-masuk" class="nav-link">Stok Masuk</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/persediaan/stok-keluar') ? 'active' : '' }}">
-                                        <a href="/admin/persediaan/stok-keluar" class="nav-link">Stok Keluar</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/persediaan/stok-opname') ? 'active' : '' }}">
-                                        <a href="/admin/persediaan/stok-opname" class="nav-link">Stok Opname</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/persediaan/kartu-stok') ? 'active' : '' }}">
-                                        <a href="/admin/persediaan/kartu-stok" class="nav-link">Kartu Stok</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-inventory"></i><span>Persediaan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li
+                                    class="nav-item {{ request()->is('admin/persediaan/saldo-awal-item') ? 'active' : '' }}">
+                                    <a href="/admin/persediaan/saldo-awal-item" class="nav-link">Saldo Awal
+                                        Item</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('admin/persediaan/stok-masuk') ? 'active' : '' }}">
+                                    <a href="/admin/persediaan/stok-masuk" class="nav-link">Stok Masuk</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('admin/persediaan/stok-keluar') ? 'active' : '' }}">
+                                    <a href="/admin/persediaan/stok-keluar" class="nav-link">Stok Keluar</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('admin/persediaan/stok-opname') ? 'active' : '' }}">
+                                    <a href="/admin/persediaan/stok-opname" class="nav-link">Stok Opname</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('admin/persediaan/kartu-stok') ? 'active' : '' }}">
+                                    <a href="/admin/persediaan/kartu-stok" class="nav-link">Kartu Stok</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li
+                            class="nav-item dropdown 
                         {{ request()->is('admin/transaksi/jadwal-booking') || request()->is('admin/transaksi') ? 'active' : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-cash-register"></i><span>Transaksi</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item {{ request()->is('admin/transaksi') ? 'active' : '' }}">
-                                        <a href="/admin/transaksi" class="nav-link">Transaksi</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-cash-register"></i><span>Transaksi</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('admin/transaksi') ? 'active' : '' }}">
+                                    <a href="/admin/transaksi" class="nav-link">Transaksi</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('admin/keuangan/cash-on-bank') ||
                         request()->is('admin/keuangan/pengeluaran') ||
                         request()->is('admin/keuangan/buku-besar') ||
@@ -401,43 +372,38 @@
                         request()->is('admin/keuangan/buku-besar')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-money-bill"></i><span>Keuangan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li
-                                        class="nav-item {{ request()->is('admin/keuangan/kas-masuk') ? 'active' : '' }}">
-                                        <a href="/admin/keuangan/kas-masuk" class="nav-link">Kas Masuk</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/keuangan/kas-keluar') ? 'active' : '' }}">
-                                        <a href="/admin/keuangan/kas-keluar" class="nav-link">Kas Keluar</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/keuangan/hutang') || request()->is('keuangan/hutang/*') ? 'active' : '' }}">
-                                        <a href="/admin/keuangan/hutang" class="nav-link">Hutang</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/keuangan/piutang') || request()->is('keuangan/piutang/*') ? 'active' : '' }}">
-                                        <a href="/admin/keuangan/piutang" class="nav-link">Piutang</a>
-                                    </li>
-                                    <li class="nav-item {{ request()->is('admin/keuangan/kasbon') ? 'active' : '' }}">
-                                        <a href="/admin/keuangan/kasbon" class="nav-link">Kasbon</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/keuangan/slip-gaji') ? 'active' : '' }}">
-                                        <a href="/admin/keuangan/slip-gaji" class="nav-link">Slip Gaji</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('admin/keuangan/cash-on-bank') ? 'active' : '' }}">
-                                        <a href="/admin/keuangan/cash-on-bank" class="nav-link">Cash on Bank</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            {{-- Role: Kasir --}}
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-money-bill"></i><span>Keuangan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('admin/keuangan/kas-masuk') ? 'active' : '' }}">
+                                    <a href="/admin/keuangan/kas-masuk" class="nav-link">Kas Masuk</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('admin/keuangan/kas-keluar') ? 'active' : '' }}">
+                                    <a href="/admin/keuangan/kas-keluar" class="nav-link">Kas Keluar</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('admin/keuangan/hutang') || request()->is('keuangan/hutang/*') ? 'active' : '' }}">
+                                    <a href="/admin/keuangan/hutang" class="nav-link">Hutang</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('admin/keuangan/piutang') || request()->is('keuangan/piutang/*') ? 'active' : '' }}">
+                                    <a href="/admin/keuangan/piutang" class="nav-link">Piutang</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('admin/keuangan/kasbon') ? 'active' : '' }}">
+                                    <a href="/admin/keuangan/kasbon" class="nav-link">Kasbon</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('admin/keuangan/slip-gaji') ? 'active' : '' }}">
+                                    <a href="/admin/keuangan/slip-gaji" class="nav-link">Slip Gaji</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('admin/keuangan/cash-on-bank') ? 'active' : '' }}">
+                                    <a href="/admin/keuangan/cash-on-bank" class="nav-link">Cash on Bank</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{-- Role: Kasir --}}
                         @elseif ($asKasir)
-                            <li
-                                class="nav-item dropdown 
+                        <li class="nav-item dropdown 
                         {{ request()->is('kasir/persediaan/stok-masuk') ||
                         request()->is('kasir/persediaan/stok-keluar') ||
                         request()->is('kasir/persediaan/saldo-awal-item') ||
@@ -445,46 +411,41 @@
                         request()->is('kasir/persediaan/kartu-stok')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-inventory"></i><span>Persediaan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li
-                                        class="nav-item {{ request()->is('kasir/persediaan/stok-masuk') ? 'active' : '' }}">
-                                        <a href="/kasir/persediaan/stok-masuk" class="nav-link">Stok Masuk</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('kasir/persediaan/stok-keluar') ? 'active' : '' }}">
-                                        <a href="/kasir/persediaan/stok-keluar" class="nav-link">Stok Keluar</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('kasir/persediaan/kartu-stok') ? 'active' : '' }}">
-                                        <a href="/kasir/persediaan/kartu-stok" class="nav-link">Kartu Stok</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-inventory"></i><span>Persediaan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('kasir/persediaan/stok-masuk') ? 'active' : '' }}">
+                                    <a href="/kasir/persediaan/stok-masuk" class="nav-link">Stok Masuk</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('kasir/persediaan/stok-keluar') ? 'active' : '' }}">
+                                    <a href="/kasir/persediaan/stok-keluar" class="nav-link">Stok Keluar</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('kasir/persediaan/kartu-stok') ? 'active' : '' }}">
+                                    <a href="/kasir/persediaan/kartu-stok" class="nav-link">Kartu Stok</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('kasir/transaksi/jadwal-booking') ||
                         request()->is('kasir/transaksi') ||
                         request()->is('transaksi/riwayat-transaksi')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-cash-register"></i><span>Transaksi</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item {{ request()->is('kasir/transaksi') ? 'active' : '' }}">
-                                        <a href="/kasir/transaksi" class="nav-link">Transaksi</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('transaksi/riwayat-transaksi') ? 'active' : '' }}">
-                                        <a href="/transaksi/riwayat-transaksi" class="nav-link">Riwayat Transaksi</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-cash-register"></i><span>Transaksi</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('kasir/transaksi') ? 'active' : '' }}">
+                                    <a href="/kasir/transaksi" class="nav-link">Transaksi</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('transaksi/riwayat-transaksi') ? 'active' : '' }}">
+                                    <a href="/transaksi/riwayat-transaksi" class="nav-link">Riwayat Transaksi</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('kasir/keuangan/cash-on-bank') ||
                         request()->is('kasir/keuangan/pengeluaran') ||
                         request()->is('kasir/keuangan/buku-besar') ||
@@ -499,74 +460,67 @@
                         request()->is('kasir/keuangan/buku-besar')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-money-bill"></i><span>Keuangan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li
-                                        class="nav-item {{ request()->is('kasir/keuangan/kas-masuk') ? 'active' : '' }}">
-                                        <a href="/kasir/keuangan/kas-masuk" class="nav-link">Kas Masuk</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('kasir/keuangan/kas-keluar') ? 'active' : '' }}">
-                                        <a href="/kasir/keuangan/kas-keluar" class="nav-link">Kas Keluar</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('kasir/keuangan/piutang') || request()->is('keuangan/piutang/*') ? 'active' : '' }}">
-                                        <a href="/kasir/keuangan/piutang" class="nav-link">Piutang</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('kasir/keuangan/cash-on-bank') ? 'active' : '' }}">
-                                        <a href="/kasir/keuangan/cash-on-bank" class="nav-link">Cash on Bank</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            {{-- Role: Capster --}}
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-money-bill"></i><span>Keuangan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('kasir/keuangan/kas-masuk') ? 'active' : '' }}">
+                                    <a href="/kasir/keuangan/kas-masuk" class="nav-link">Kas Masuk</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('kasir/keuangan/kas-keluar') ? 'active' : '' }}">
+                                    <a href="/kasir/keuangan/kas-keluar" class="nav-link">Kas Keluar</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('kasir/keuangan/piutang') || request()->is('keuangan/piutang/*') ? 'active' : '' }}">
+                                    <a href="/kasir/keuangan/piutang" class="nav-link">Piutang</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('kasir/keuangan/cash-on-bank') ? 'active' : '' }}">
+                                    <a href="/kasir/keuangan/cash-on-bank" class="nav-link">Cash on Bank</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{-- Role: Capster --}}
                         @elseif ($asCapster)
-                            <li
-                                class="nav-item dropdown 
+                        <li class="nav-item dropdown 
                         {{ request()->is('capster/transaksi/jadwal-booking') ||
                         request()->is('capster/transaksi') ||
                         request()->is('transaksi/riwayat-transaksi')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-cash-register"></i><span>Transaksi</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item {{ request()->is('capster/transaksi') ? 'active' : '' }}">
-                                        <a href="/capster/transaksi" class="nav-link">Transaksi</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('capster/transaksi/jadwal-booking') ? 'active' : '' }}">
-                                        <a href="/capster/transaksi/jadwal-booking" class="nav-link">Jadwal
-                                            Booking</a>
-                                    </li>
-                                    <li
-                                        class="nav-item {{ request()->is('transaksi/riwayat-transaksi') ? 'active' : '' }}">
-                                        <a href="/transaksi/riwayat-transaksi" class="nav-link">Riwayat
-                                            Transaksi</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li
-                                class="nav-item dropdown 
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-cash-register"></i><span>Transaksi</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('capster/transaksi') ? 'active' : '' }}">
+                                    <a href="/capster/transaksi" class="nav-link">Transaksi</a>
+                                </li>
+                                <li
+                                    class="nav-item {{ request()->is('capster/transaksi/jadwal-booking') ? 'active' : '' }}">
+                                    <a href="/capster/transaksi/jadwal-booking" class="nav-link">Jadwal
+                                        Booking</a>
+                                </li>
+                                <li class="nav-item {{ request()->is('transaksi/riwayat-transaksi') ? 'active' : '' }}">
+                                    <a href="/transaksi/riwayat-transaksi" class="nav-link">Riwayat
+                                        Transaksi</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown 
                         {{ request()->is('capster/laporan/transaksi') ||
                         request()->is('capster/laporan/pembayaran-non-tunai') ||
                         request()->is('capster/laporan/komisi-karyawan') ||
                         request()->is('capster/laporan/pengeluaran')
                             ? 'active'
                             : '' }}">
-                                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                    <i class="far fa-files"></i><span>Laporan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li
-                                        class="nav-item {{ request()->is('capster/laporan/komisi') ? 'active' : '' }}">
-                                        <a href="/capster/laporan/komisi" class="nav-link">Laporan Komisi</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                                <i class="far fa-files"></i><span>Laporan</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item {{ request()->is('capster/laporan/komisi') ? 'active' : '' }}">
+                                    <a href="/capster/laporan/komisi" class="nav-link">Laporan Komisi</a>
+                                </li>
+                            </ul>
+                        </li>
                         @endif
                     </ul>
                 </div>
@@ -638,7 +592,7 @@
                 }
             })
         })
-        window.addEventListener('swal:transaksi', function(event) {
+        window.addEventListener('swal:transaksi', function (event) {
             const {
                 idTransaksi,
                 message,
@@ -658,9 +612,10 @@
                 }
             });
         });
-        window.onbeforeunload = function() {
+        window.onbeforeunload = function () {
             window.scrollTo(5, 75);
         };
+
     </script>
 
     <!-- Template JS File -->

@@ -58,12 +58,10 @@ class DaftarSupplier extends Component
         $this->searchResetPage();
         $search = '%' . $this->searchTerm . '%';
 
-        $data = DB::table('daftar_supplier')->select('daftar_supplier.id', 'daftar_supplier.nama_supplier', 'daftar_supplier.sisa_hutang', 'daftar_supplier.no_telp', 'cabang_lokasi.nama_cabang', 'users.name')
-            ->join('cabang_lokasi', 'cabang_lokasi.id', 'daftar_supplier.id_cabang')
+        $data = DB::table('daftar_supplier')->select('daftar_supplier.id', 'daftar_supplier.nama_supplier', 'daftar_supplier.sisa_hutang', 'daftar_supplier.no_telp', 'users.name')
             ->join('users', 'users.id', 'daftar_supplier.id_user')
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', $search);
-                $query->orWhere('nama_cabang', 'LIKE', $search);
                 $query->orWhere('nama_supplier', 'LIKE', $search);
                 $query->orWhere('daftar_supplier.no_telp', 'LIKE', $search);
             })

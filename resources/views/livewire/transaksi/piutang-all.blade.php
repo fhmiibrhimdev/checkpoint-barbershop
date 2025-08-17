@@ -48,13 +48,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data->groupBy('nama_cabang') as $result)
-                                <tr>
-                                    <td class="tw-text-sm tw-tracking-wider" colspan="10">
-                                        <b>Lokasi: {{ $result[0]->nama_cabang }}</b>
-                                    </td>
-                                </tr>
-                                @foreach ($result as $row)
+                                @forelse ($data as $row)
                                 <tr>
                                     <td class="text-center">{{ $loop->index + 1 }}</td>
                                     <td class="tw-whitespace-nowrap">
@@ -75,7 +69,6 @@
                                         </a>
                                     </td>
                                 </tr>
-                                @endforeach
                                 @empty
                                 <tr>
                                     <td colspan="12" class="text-center">Not data available in the table</td>
@@ -92,12 +85,7 @@
             </div>
             @if ($agent->isMobile())
             <div class="tw-px-3 -tw-mt-1">
-                @forelse ($data->groupBy('nama_cabang') as $row)
-                <div
-                    class="tw-font-semibold tw-text-[#34395e] tw-tracking-[0.5px] tw-text-base tw-mt-6 tw-mb-4 lg:tw-px-0">
-                    <p>{{ $row[0]->nama_cabang }}</p>
-                </div>
-                @foreach ($row as $result)
+                @forelse ($data as $result)
                 <div
                     class="tw-bg-white tw-rounded-lg tw-shadow-md tw-shadow-gray-300 tw-h-full tw-px-3 tw-py-3 tw-mt-3 tw-text-[#34395e]">
                     <div class="tw-flex tw-justify-between tw-items-center tw-mt-1">
@@ -143,7 +131,6 @@
                         <p class="tw-font-normal tw-text-red-600">@money($result->kembalian)</p>
                     </div>
                 </div>
-                @endforeach
                 @empty
                 No data available
                 @endforelse

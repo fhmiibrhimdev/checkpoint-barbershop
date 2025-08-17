@@ -53,7 +53,7 @@ class CabangLokasi extends Component
         $this->syarat_nota_1                = NULL;
         $this->template_pesan_pembayaran    = NULL;
         $this->status                       = NULL;
-        $this->no_telp                      = NULL;
+        $this->no_telp                      = "62";
     }
 
     public function render()
@@ -308,20 +308,32 @@ class CabangLokasi extends Component
 
     public function delete()
     {
-        DB::beginTransaction();
         try {
-            ModelsCabangLokasi::findOrFail($this->dataId)->delete();
-            // KategoriProduk::where('id_cabang', $this->dataId)->delete();
-            // KategoriKeuangan::where('id_cabang', $this->dataId)->delete();
-            // KategoriPembayaran::where('id_cabang', $this->dataId)->delete();
-            // KategoriSatuan::where('id_cabang', $this->dataId)->delete();
-            DaftarPelanggan::where('id_cabang', $this->dataId)->delete();
-            DaftarKaryawan::where('id_cabang', $this->dataId)->delete();
+            // Simpan maxId untuk reset auto increment nanti
+            $maxId = DB::transaction(function () {
+                $cabang = ModelsCabangLokasi::where('id', $this->dataId)->first();
+                if (!$cabang) {
+                    throw new \Exception("Cabang dengan ID {$this->dataId} tidak ditemukan.");
+                }
 
-            DB::commit();
+                $cabang->delete();
+
+                $userIds = User::where('id_cabang', $this->dataId)->pluck('id');
+
+                DaftarPelanggan::where('id_cabang', $this->dataId)->delete();
+                DaftarKaryawan::where('id_cabang', $this->dataId)->delete();
+                User::whereIn('id', $userIds)->delete();
+                DB::table('role_user')->whereIn('user_id', $userIds)->delete();
+
+                // Ambil max id (tanpa alter table di sini)
+                return DB::table('cabang_lokasi')->max('id') ?? 0;
+            });
+
+            // Jalankan ALTER TABLE di luar transaksi
+            DB::statement("ALTER TABLE cabang_lokasi AUTO_INCREMENT = " . ($maxId + 1));
+
             $this->dispatchAlert('success', 'Success!', 'Data deleted successfully.');
         } catch (\Exception $e) {
-            DB::rollBack();
             $this->dispatchAlert('error', 'Gagal!', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }

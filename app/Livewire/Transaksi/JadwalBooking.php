@@ -840,7 +840,7 @@ class JadwalBooking extends Component
 
         $this->cartItems         = [];
 
-        $this->tanggal           = now()->format('Y-m-d\TH:i');
+        $this->tanggal           = now()->format('Y-m-d H:i:s');
 
         $this->catatan           = '-';
         $this->total_pesanan     = 0;

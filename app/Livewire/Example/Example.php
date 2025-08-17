@@ -27,18 +27,9 @@ class Example extends Component
 
     public $dataId, $title;
 
-    public function updatingLengthData()
+    public function mount()
     {
-        $this->resetPage();
-    }
-
-    private function searchResetPage()
-    {
-        if ($this->searchTerm !== $this->previousSearchTerm) {
-            $this->resetPage();
-        }
-
-        $this->previousSearchTerm = $this->searchTerm;
+        $this->resetInputFields();
     }
 
     public function render()
@@ -50,32 +41,6 @@ class Example extends Component
             ->paginate($this->lengthData);
 
         return view('livewire.example.example', compact('data'));
-    }
-
-    private function dispatchAlert($type, $message, $text)
-    {
-        $this->dispatch('swal:modal', [
-            'type'      => $type,
-            'message'   => $message,
-            'text'      => $text
-        ]);
-
-        $this->resetInputFields();
-    }
-
-    public function isEditingMode($mode)
-    {
-        $this->isEditing = $mode;
-    }
-
-    private function resetInputFields()
-    {
-        $this->title = '';
-    }
-
-    public function cancel()
-    {
-        $this->resetInputFields();
     }
 
     public function store()
@@ -125,5 +90,45 @@ class Example extends Component
     {
         Todo::findOrFail($this->dataId)->delete();
         $this->dispatchAlert('success', 'Success!', 'Data deleted successfully.');
+    }
+
+    public function updatingLengthData()
+    {
+        $this->resetPage();
+    }
+
+    private function searchResetPage()
+    {
+        if ($this->searchTerm !== $this->previousSearchTerm) {
+            $this->resetPage();
+        }
+
+        $this->previousSearchTerm = $this->searchTerm;
+    }
+
+    private function dispatchAlert($type, $message, $text)
+    {
+        $this->dispatch('swal:modal', [
+            'type'      => $type,
+            'message'   => $message,
+            'text'      => $text
+        ]);
+
+        $this->resetInputFields();
+    }
+
+    public function isEditingMode($mode)
+    {
+        $this->isEditing = $mode;
+    }
+
+    private function resetInputFields()
+    {
+        $this->title = '';
+    }
+
+    public function cancel()
+    {
+        $this->resetInputFields();
     }
 }

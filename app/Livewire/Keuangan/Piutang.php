@@ -76,10 +76,9 @@ class Piutang extends Component
 
         if ($this->id_transaksi == null) {
             $data = DB::table('transaksi')
-                ->select('transaksi.id', 'transaksi.tanggal', 'piutang.no_referensi', 'transaksi.no_transaksi', 'nama_pelanggan', 'transaksi.total_akhir', 'transaksi.jumlah_dibayarkan', 'transaksi.kembalian', DB::raw('(SELECT SUM(piutang.jumlah_bayar) FROM piutang WHERE piutang.id_transaksi = transaksi.id) as total_bayar'), 'nama_cabang')
+                ->select('transaksi.id', 'transaksi.tanggal', 'piutang.no_referensi', 'transaksi.no_transaksi', 'nama_pelanggan', 'transaksi.total_akhir', 'transaksi.jumlah_dibayarkan', 'transaksi.kembalian', DB::raw('(SELECT SUM(piutang.jumlah_bayar) FROM piutang WHERE piutang.id_transaksi = transaksi.id) as total_bayar'))
                 ->join('piutang', 'piutang.id_transaksi', '=', 'transaksi.id')
                 ->join('daftar_pelanggan', 'daftar_pelanggan.id', '=', 'transaksi.id_pelanggan')
-                ->join('cabang_lokasi', 'cabang_lokasi.id', 'transaksi.id_cabang')
                 ->where(function ($query) use ($search) {
                     $query->where('piutang.tanggal_bayar', 'LIKE', $search)
                         ->orWhere('piutang.jumlah_bayar', 'LIKE', $search)
@@ -333,7 +332,7 @@ class Piutang extends Component
 
     private function resetInputFields()
     {
-        $this->tanggal_bayar = date('Y-m-d');
+        $this->tanggal_bayar = date('Y-m-d H:i:s');
         $this->jumlah_bayar = '0';
         $this->keterangan = '-';
         $this->id_metode_pembayaran = '';
