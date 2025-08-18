@@ -57,6 +57,10 @@ class JadwalBooking extends Component
     // Table: detail_transaksi
     public $id_transaksi, $id_produk, $nama_item, $kategori_item, $deskripsi_item, $harga_item, $jumlah, $sub_total, $input_diskon, $diskon, $total_harga, $id_karyawan, $nama_karyawan, $komisi_persen, $komisi_nominal;
 
+    public $wa_no_transaksi, $wa_nama_pelanggan, $wa_no_telp, $template_pesan, $statusConnected;
+    // config minimal
+    public $waBase, $waCredId;
+
     public function mount(GlobalDataService $globalDataService)
     {
         $this->globalDataService = $globalDataService;
@@ -64,7 +68,8 @@ class JadwalBooking extends Component
 
         $this->pelanggans        = $this->globalDataService->getPelanggansCustom($this->id_cabang);
         $this->pembayarans       = $this->globalDataService->getMetodePembayaran();
-
+        $this->waBase            = $globalDataService->waBase();
+        $this->waCredId          = DB::table('cabang_lokasi')->where('id', $this->id_cabang)->value('cred_id');
         $user = Auth::user();
         $this->id_karyawan = DB::table('daftar_karyawan')
             ->where('id_user', Auth::id()) // sesuaikan nama kolom relasinya
@@ -113,11 +118,6 @@ class JadwalBooking extends Component
 
         return view('livewire.caspter.transaksi.jadwal-booking', compact('data'));
     }
-
-    public $wa_no_transaksi, $wa_nama_pelanggan, $wa_no_telp, $template_pesan, $statusConnected;
-    // config minimal
-    private $waBase   = 'http://localhost:5000';
-    private $waCredId = '6289601922906';
 
     public function kirimWA($id)
     {

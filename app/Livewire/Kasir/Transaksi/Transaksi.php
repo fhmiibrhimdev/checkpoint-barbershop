@@ -375,6 +375,7 @@ class Transaksi extends Component
             })
             ->when($this->filter_status, fn($q) => $q->where('transaksi.status', $this->filter_status))
             ->when($this->filter_pembayaran, fn($q) => $q->where('transaksi.id_metode_pembayaran', $this->filter_pembayaran))
+            ->where('detail.id_karyawan', $this->id_karyawan)
             ->whereBetween('transaksi.tanggal', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
             ->where('transaksi.id_cabang', $this->filter_id_cabang)
             ->orderByRaw('(detail.id_karyawan = ?) DESC', [$this->id_karyawan])

@@ -566,6 +566,27 @@
                     </li>
                     </ul>
                     </li>
+                    <li class="nav-item dropdown 
+                        {{ request()->is('laporan/kasbon-karyawan') ||
+                        request()->is('laporan/komisi-karyawan') ||
+                        request()->is('laporan/slip-gaji-karyawan')
+                            ? 'active'
+                            : '' }}">
+                        <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                            <i class="far fa-files"></i><span>Laporan</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-item {{ request()->is('laporan/komisi-karyawan') ? 'active' : '' }}">
+                                <a href="/laporan/komisi-karyawan" class="nav-link">Laporan Komisi</a>
+                            </li>
+                            <li class="nav-item {{ request()->is('laporan/kasbon-karyawan') ? 'active' : '' }}">
+                                <a href="/laporan/kasbon-karyawan" class="nav-link">Laporan Kasbon</a>
+                            </li>
+                            <li class="nav-item {{ request()->is('laporan/slip-gaji-karyawan') ? 'active' : '' }}">
+                                <a href="/laporan/slip-gaji-karyawan" class="nav-link">Laporan Slip Gaji</a>
+                            </li>
+                        </ul>
+                    </li>
                     {{-- Role: Capster --}}
                     @elseif ($asCapster)
                     <li class="nav-item dropdown
@@ -662,18 +683,23 @@
                     </ul>
                     </li>
                     <li class="nav-item dropdown 
-                        {{ request()->is('capster/laporan/transaksi') ||
-                        request()->is('capster/laporan/pembayaran-non-tunai') ||
-                        request()->is('capster/laporan/komisi-karyawan') ||
-                        request()->is('capster/laporan/pengeluaran')
+                        {{ request()->is('laporan/kasbon-karyawan') ||
+                        request()->is('laporan/komisi-karyawan') ||
+                        request()->is('laporan/slip-gaji-karyawan')
                             ? 'active'
                             : '' }}">
                         <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
                             <i class="far fa-files"></i><span>Laporan</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="nav-item {{ request()->is('capster/laporan/komisi') ? 'active' : '' }}">
-                                <a href="/capster/laporan/komisi" class="nav-link">Laporan Komisi</a>
+                            <li class="nav-item {{ request()->is('laporan/komisi-karyawan') ? 'active' : '' }}">
+                                <a href="/laporan/komisi-karyawan" class="nav-link">Laporan Komisi</a>
+                            </li>
+                            <li class="nav-item {{ request()->is('laporan/kasbon-karyawan') ? 'active' : '' }}">
+                                <a href="/laporan/kasbon-karyawan" class="nav-link">Laporan Kasbon</a>
+                            </li>
+                            <li class="nav-item {{ request()->is('laporan/slip-gaji-karyawan') ? 'active' : '' }}">
+                                <a href="/laporan/slip-gaji-karyawan" class="nav-link">Laporan Slip Gaji</a>
                             </li>
                         </ul>
                     </li>

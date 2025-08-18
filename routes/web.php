@@ -26,6 +26,7 @@ use App\Livewire\Persediaan\StokOpname;
 use App\Livewire\Laporan\LaporanLabaRugi;
 use App\Livewire\Pengaturan\ProfileUsaha;
 use App\Livewire\Transaksi\JadwalBooking;
+use App\Http\Controllers\KasbonController;
 use App\Livewire\Laporan\LaporanPembukuan;
 use App\Livewire\Persediaan\SaldoAwalItem;
 use App\Livewire\DataMaster\DaftarKaryawan;
@@ -40,20 +41,30 @@ use App\Http\Controllers\Laporan\HppController;
 use App\Http\Controllers\NotaDigitalController;
 use App\Livewire\DataPendukung\KategoriKeuangan;
 use App\Http\Controllers\Laporan\OmsetController;
+use App\Livewire\Laporan\Kasbon as LaporanKasbon;
+use App\Livewire\Laporan\Komisi as LaporanKomisi;
+use App\Http\Controllers\Laporan\KomisiController;
 use App\Livewire\DataPendukung\KategoriPembayaran;
 use App\Http\Controllers\Laporan\LabaRugiController;
+use App\Http\Controllers\Laporan\SlipGajiController;
 use App\Http\Controllers\Laporan\PembukuanController;
+use App\Livewire\Laporan\SlipGaji as LaporanSlipGaji;
 use App\Livewire\Admin\Keuangan\Hutang as AdminHutang;
 use App\Livewire\Admin\Keuangan\Kasbon as AdminKasbon;
 use App\Livewire\Kasir\Keuangan\Hutang as KasirHutang;
 use App\Http\Controllers\Laporan\PengeluaranController;
 use App\Livewire\Admin\DataMaster\Produk as AdminProduk;
 use App\Livewire\Admin\Keuangan\Piutang as AdminPiutang;
+use App\Livewire\Kasir\DataMaster\Produk as KasirProduk;
 use App\Livewire\Kasir\Keuangan\Piutang as KasirPiutang;
+use App\Http\Controllers\Laporan\KasbonKaryawanController;
+use App\Http\Controllers\Laporan\KomisiKaryawanController;
 use App\Livewire\Admin\Keuangan\KasMasuk as AdminKasMasuk;
 use App\Livewire\Admin\Keuangan\SlipGaji as AdminSlipGaji;
 use App\Livewire\Kasir\Keuangan\KasMasuk as KasirKasMasuk;
+use App\Http\Controllers\Laporan\SlipGajiKaryawanController;
 use App\Livewire\Admin\Keuangan\KasKeluar as AdminKasKeluar;
+use App\Livewire\Capster\DataMaster\Produk as CapsterProduk;
 use App\Livewire\Kasir\Keuangan\KasKeluar as KasirKasKeluar;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Livewire\Admin\Transaksi\Transaksi as AdminTransaksi;
@@ -68,7 +79,10 @@ use App\Livewire\Admin\Persediaan\StokKeluar as AdminStokKeluar;
 use App\Livewire\Admin\Persediaan\StokOpname as AdminStokOpname;
 use App\Livewire\Kasir\Persediaan\StokKeluar as KasirStokKeluar;
 use App\Livewire\Caspter\Transaksi\Transaksi as CapsterTransaksi;
+use App\Livewire\Laporan\KasbonKaryawan as LaporanKasbonKaryawan;
+use App\Livewire\Laporan\KomisiKaryawan as LaporanKomisiKaryawan;
 use App\Livewire\Admin\Transaksi\JadwalBooking as AdminJadwalBooking;
+use App\Livewire\Laporan\SlipGajiKaryawan as LaporanSlipGajiKaryawan;
 use App\Livewire\Admin\Persediaan\SaldoAwalItem as AdminSaldoAwalItem;
 use App\Livewire\Admin\DataMaster\DaftarKaryawan as AdminDaftarKaryawan;
 use App\Livewire\Admin\DataMaster\DaftarSupplier as AdminDaftarSupplier;
@@ -77,8 +91,6 @@ use App\Livewire\Caspter\Transaksi\JadwalBooking as CapsterJadwalBooking;
 use App\Livewire\Admin\DataMaster\DaftarPelanggan as AdminDaftarPelanggan;
 use App\Livewire\Admin\DataPendukung\KategoriSatuan as AdminKategoriSatuan;
 use App\Livewire\Admin\DataPendukung\KategoriKeuangan as AdminKategoriKeuangan;
-use App\Livewire\Capster\DataMaster\Produk as CapsterProduk;
-use App\Livewire\Kasir\DataMaster\Produk as KasirProduk;
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
@@ -104,6 +116,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan/laporan-pembukuan', LaporanPembukuan::class);
     Route::get('/laporan/laporan-laba-rugi', LaporanLabaRugi::class);
 
+    Route::get('/laporan/komisi-karyawan', LaporanKomisiKaryawan::class);
+    Route::get('/laporan/slip-gaji-karyawan', LaporanSlipGajiKaryawan::class);
+    Route::get('/laporan/kasbon-karyawan', LaporanKasbonKaryawan::class);
+
     Route::get('/laporan/laporan-omset/pdf', [OmsetController::class, 'exportPdf'])
         ->name('laporan.omset.pdf');
     Route::get('/laporan/laporan-hpp/pdf', [HppController::class, 'exportPdf'])
@@ -114,6 +130,13 @@ Route::middleware('auth')->group(function () {
         ->name('laporan.pembukuan.pdf');
     Route::get('/laporan/laporan-laba-rugi/pdf', [LabaRugiController::class, 'exportPdf'])
         ->name('laporan.laba-rugi.pdf');
+
+    Route::get('/laporan/komisi-karyawan/pdf', [KomisiKaryawanController::class, 'exportPdf'])
+        ->name('laporan.komisi-karyawan.pdf');
+    Route::get('/laporan/slip-gaji-karyawan/pdf', [SlipGajiKaryawanController::class, 'exportPdf'])
+        ->name('laporan.slip-gaji-karyawan.pdf');
+    Route::get('/laporan/kasbon-karyawan/pdf', [KasbonKaryawanController::class, 'exportPdf'])
+        ->name('laporan.kasbon-karyawan.pdf');
 
     Route::get('/pengaturan/profile-usaha', ProfileUsaha::class);
 });

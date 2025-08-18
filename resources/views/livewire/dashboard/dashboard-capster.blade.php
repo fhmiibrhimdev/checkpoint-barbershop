@@ -14,45 +14,64 @@
                         <div class="tw-grid tw-grid-flow-col tw-auto-cols-max tw-gap-4">
                             <div class="card tw-bg-gray-800 tw-rounded-lg tw-text-white tw-min-w-[250px]">
                                 <div class="card-body tw-p-0">
-                                    <div class="tw-flex tw-px-4 tw-py-5 tw-space-x-3">
+                                    <div class="tw-flex tw-px-4 tw-py-5 tw-space-x-3 tw-items-center">
                                         <div>
                                             <div class="tw-px-4 tw-py-2 tw-border tw-border-gray-700 tw-rounded-lg">
                                                 <i class="fa-sharp fa-solid fa-money-bill-trend-up tw-text-lg"></i>
                                             </div>
                                         </div>
                                         <div>
-                                            <h3 class="tw-text-gray-300">Pendapatan Komisi</h3>
+                                            <h3 class="tw-text-gray-50">Pendapatan Komisi</h3>
+                                            <p class="tw-text-xl">@money($total_keseluruhan['komisi_bulanan'] ?? 0)</p>
+                                            <p class="tw-leading-4 tw-text-gray-300">Bulan Ini</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card tw-bg-gray-800 tw-rounded-lg tw-text-white tw-min-w-[250px]">
+                                <div class="card-body tw-p-0">
+                                    <div class="tw-flex tw-px-4 tw-py-5 tw-space-x-3 tw-items-center">
+                                        <div>
+                                            <div class="tw-px-4 tw-py-2 tw-border tw-border-gray-700 tw-rounded-lg">
+                                                <i class="fa-sharp fa-solid fa-money-bill-trend-up tw-text-lg"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h3 class="tw-text-gray-50">Pendapatan Komisi</h3>
                                             <p class="tw-text-xl">@money($total_keseluruhan['komisi'] ?? 0)</p>
+                                            <p class="tw-leading-4 tw-text-gray-300">Keseluruhan</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card tw-bg-gray-800 tw-rounded-lg tw-text-white tw-min-w-[250px]">
                                 <div class="card-body tw-p-0">
-                                    <div class="tw-flex tw-px-4 tw-py-5 tw-space-x-3">
+                                    <div class="tw-flex tw-px-4 tw-py-5 tw-space-x-3 tw-items-center">
                                         <div>
                                             <div class="tw-px-4 tw-py-2 tw-border tw-border-gray-700 tw-rounded-lg">
                                                 <i class="fa-sharp fa-solid fa-money-bill tw-text-lg"></i>
                                             </div>
                                         </div>
                                         <div>
-                                            <h3 class="tw-text-gray-300">Kasbon</h3>
+                                            <h3 class="tw-text-gray-50">Kasbon</h3>
                                             <p class="tw-text-xl">@money($total_keseluruhan['kasbon'] ?? 0)</p>
+                                            <p class="tw-leading-4 tw-text-gray-300">Keseluruhan</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card tw-bg-gray-800 tw-rounded-lg tw-text-white tw-min-w-[250px]">
                                 <div class="card-body tw-p-0">
-                                    <div class="tw-flex tw-px-4 tw-py-5 tw-space-x-3">
+                                    <div class="tw-flex tw-px-4 tw-py-5 tw-space-x-3 tw-items-center">
                                         <div>
                                             <div class="tw-px-4 tw-py-2 tw-border tw-border-gray-700 tw-rounded-lg">
                                                 <i class="fa-sharp fa-solid fa-money-bill tw-text-lg"></i>
                                             </div>
                                         </div>
                                         <div>
-                                            <h3 class="tw-text-gray-300">Piutang</h3>
+                                            <h3 class="tw-text-gray-50">Piutang</h3>
                                             <p class="tw-text-xl">@money($total_keseluruhan['piutang'] ?? 0)</p>
+                                            <p class="tw-leading-4 tw-text-gray-300">Keseluruhan</p>
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +86,7 @@
                 <div class="tw-px-4 -tw-mt-0 lg:-tw-mt-0 lg:tw-px-1">
                     <h3 class="tw-tracking-wider tw-text-[#34395e] tw-text-base tw-font-semibold">
                         Report Harian</h3>
-                    <p class="tw-leading-5 tw-mt-2">Cek pemasukan dari transaksi di tokomu.</p>
+                    <p class="tw-leading-5 tw-mt-2">Cek pemasukan dari transaksi di tokomu untuk hari ini.</p>
                 </div>
                 <div class="tw-grid tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-y-0 tw-gap-x-4 tw-px-4 lg:tw-px-0 tw-mt-4">
                     <div

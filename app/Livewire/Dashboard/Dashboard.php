@@ -276,6 +276,13 @@ class Dashboard extends Component
          *  -------------------------
          */
         $totals = [
+            'komisi_bulanan' => DB::table('transaksi as t')
+                ->join('detail_transaksi as dt', 'dt.id_transaksi', '=', 't.id')
+                ->where('dt.id_karyawan', $this->id_karyawan)
+                ->whereIn('t.status', [2, 3])
+                ->whereBetween('t.tanggal', [$startMonth, $endMonth])
+                ->sum('t.total_komisi_karyawan'),
+
             'komisi' => DB::table('transaksi as t')
                 ->join('detail_transaksi as dt', 'dt.id_transaksi', '=', 't.id')
                 ->where('dt.id_karyawan', $this->id_karyawan)
