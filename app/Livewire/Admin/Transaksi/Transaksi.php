@@ -65,6 +65,10 @@ class Transaksi extends Component
     public $id_transaksi, $id_produk, $nama_item, $kategori_item, $deskripsi_item, $harga_item, $harga_pokok, $jumlah, $sub_total, $input_diskon, $diskon, $total_harga, $id_karyawan, $nama_karyawan, $komisi_persen, $komisi_nominal;
     public $flag_reset_kunjungan = false;
 
+    public $wa_no_transaksi, $wa_nama_pelanggan, $wa_no_telp, $template_pesan, $statusConnected;
+    // config minimal
+    public $waBase, $waCredId;
+
     public function mount(GlobalDataService $globalDataService)
     {
         $this->globalDataService = $globalDataService;
@@ -73,7 +77,8 @@ class Transaksi extends Component
         $id_cabang = $user->id_cabang;
         $this->id_cabang         = $id_cabang;
         $this->filter_id_cabang  = $id_cabang;
-
+        $this->waBase            = $globalDataService->waBase();
+        $this->waCredId          = DB::table('cabang_lokasi')->where('id', $this->filter_id_cabang)->value('cred_id');
         $this->pelanggans        = $this->globalDataService->getPelanggansCustom($this->id_cabang);
         $this->produks           = $this->globalDataService->getProdukAndKategoriCustom($this->id_cabang);
         $this->pembayarans       = $this->globalDataService->getMetodePembayaran();
@@ -124,11 +129,6 @@ class Transaksi extends Component
 
         return view('livewire.admin.transaksi.transaksi', compact('data'));
     }
-
-    public $wa_no_transaksi, $wa_nama_pelanggan, $wa_no_telp, $template_pesan, $statusConnected;
-    // config minimal
-    private $waBase   = 'http://localhost:5000';
-    private $waCredId = '6289601922906';
 
     public function kirimWA($id)
     {

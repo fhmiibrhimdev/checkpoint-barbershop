@@ -113,4 +113,9 @@ class GlobalDataService
             ->where('header', 'no')
             ->get();
     }
+
+    public function waBase()
+    {
+        return "http://0.0.0.0:5000";
+    }
 }

@@ -2,8 +2,11 @@
 
 namespace App\Livewire\DataPendukung;
 
+use App\Models\User;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
+use App\Models\DaftarKaryawan;
 use App\Models\KategoriProduk;
 use App\Models\KategoriSatuan;
 use Livewire\Attributes\Title;
@@ -12,10 +15,8 @@ use App\Models\KategoriKeuangan;
 use App\Models\KategoriPembayaran;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\CabangLokasi as ModelsCabangLokasi;
-use App\Models\DaftarKaryawan;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\CabangLokasi as ModelsCabangLokasi;
 
 class CabangLokasi extends Component
 {
@@ -42,10 +43,11 @@ class CabangLokasi extends Component
 
     public $dataId;
 
-    public $nama_cabang, $subtitle_cabang, $alamat, $email, $syarat_nota_1, $template_pesan_pembayaran, $status, $no_telp;
+    public $nama_cabang, $subtitle_cabang, $alamat, $email, $syarat_nota_1, $template_pesan_pembayaran, $status, $no_telp, $cred_id;
 
     public function mount()
     {
+        // dd(Str::uuid());
         $this->nama_cabang                  = NULL;
         $this->subtitle_cabang              = NULL;
         $this->alamat                       = NULL;
@@ -85,12 +87,10 @@ class CabangLokasi extends Component
                 'status'                   => $this->status,
                 'no_telp'                  => $this->no_telp,
                 'template_pesan_booking'   => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nBooking Anda telah tercatat di [nama_cabang].\n\nJika ada pertanyaan silakan hubungi admin.",
-
                 'template_pesan_belum_lunas' => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nKami dari [nama_cabang]\nStatus pembayaran anda BELUM LUNAS.\nTotal tagihan : Rp. [total_tagihan]\nPembayaran Senilai Rp. [total_bayar],- via [metode_pembayaran] TELAH KAMI TERIMA.\nSisa bayar : Rp. [sisa_bayar]\n\nSilakan lakukan pelunasan sesuai ketentuan.\nBerikut link nota digital: [link_nota]",
-
                 'template_pesan_lunas' => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nKami dari [nama_cabang]\nPembayaran Senilai Rp. [total_bayar],- via [metode_pembayaran] TELAH KAMI TERIMA.\n\nBerikut link nota digital: [link_nota]",
-
                 'template_pesan_dibatalkan' => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nKami dari [nama_cabang]\nMohon maaf, transaksi anda telah DIBATALKAN.\n\nJika ada pertanyaan silakan hubungi admin.",
+                'cred_id'                  => Str::uuid(),
 
                 // kalau ada kebutuhan lain tinggal tambah
             ]);

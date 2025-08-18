@@ -71,10 +71,16 @@ class Transaksi extends Component
     public $id_karyawan, $nama_karyawan, $komisi_persen, $komisi_nominal;
     public $flag_reset_kunjungan = false;
 
+    public $wa_no_transaksi, $wa_nama_pelanggan, $wa_no_telp, $template_pesan, $statusConnected;
+    // config minimal
+    public $waBase, $waCredId;
+
     public function mount(GlobalDataService $globalDataService)
     {
         $this->initializeServices($globalDataService);
         $this->initializeUserData();
+        $this->waBase            = $globalDataService->waBase();
+        $this->waCredId          = DB::table('cabang_lokasi')->where('id', $this->filter_id_cabang)->value('cred_id');
         $this->loadMasterData();
         $this->resetInputFields();
     }
@@ -85,11 +91,6 @@ class Transaksi extends Component
         $data = $this->getTransaksiData();
         return view('livewire.caspter.transaksi.transaksi', compact('data'));
     }
-
-    public $wa_no_transaksi, $wa_nama_pelanggan, $wa_no_telp, $template_pesan, $statusConnected;
-    // config minimal
-    private $waBase   = 'http://localhost:5000';
-    private $waCredId = '6289601922906';
 
     public function kirimWA($id)
     {

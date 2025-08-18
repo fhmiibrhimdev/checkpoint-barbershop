@@ -17,6 +17,12 @@
         </div>
 
         <div class="section-body">
+            @if (!$statusConnected)
+            <button class="btn-modal" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                data-target="#formDataModal">
+                <i class="fab fa-whatsapp tw-text-2xl"></i>
+            </button>
+            @endif
             <div class="card">
                 <div class="tw-flex tw-ml-6 tw-mt-6 tw-mb-5 lg:tw-mb-1">
                     <h3 class="tw-tracking-wider tw-text-[#34395e] tw-text-base tw-font-semibold">
@@ -92,8 +98,44 @@
                                 id="template_pesan_dibatalkan" style="height: 100px"></textarea>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="cred_id" class="col-sm-2 col-form-label">Cred ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" wire:model="cred_id" class="form-control" id="cred_id">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="modal fade" data-backdrop="static" wire:ignore.self id="formDataModal"
+        aria-labelledby="formDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formDataModalLabel">Register WhatsApp</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <center>
+                            <p class="tw-tracking-wider tw-text-[#34395e] tw-font-semibold tw-text-xl tw-mb-3">Scan Here
+                            </p>
+                            <div wire:loading wire:target="generateQRCode" class="tw-mb-3">
+                                <p class="text-info">Loading QR Code...</p>
+                            </div>
+                            <div id="qrcode-scan">
+                                {!! $qrcodeHtml !!}
+                            </div>
+                            <button class="btn btn-primary tw-mt-5" wire:click.prevent="generateQRCode">Generate
+                                QRCode</button>
+                        </center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
