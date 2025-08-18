@@ -77,10 +77,6 @@
                 </div>
             </div>
         </div>
-        <button wire:click.prevent="isEditingMode(false)" class="btn-modal" data-toggle="modal" data-backdrop="static"
-            data-keyboard="false" data-target="#formDataModal">
-            <i class="far fa-plus"></i>
-        </button>
     </section>
 
     <div class="modal fade" data-backdrop="static" wire:ignore.self id="formDataModal"

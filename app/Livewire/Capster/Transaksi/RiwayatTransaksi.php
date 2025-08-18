@@ -60,7 +60,7 @@ class RiwayatTransaksi extends Component
                     ->orWhere('no_transaksi', 'like', $search);
             })
             ->distinct()
-            ->whereIn('status', ['1', '2', '3'])
+            ->whereIn('status', ['2', '3'])
             ->where('detail_transaksi.id_karyawan', $this->id_karyawan)
             ->paginate($this->lengthData);
 

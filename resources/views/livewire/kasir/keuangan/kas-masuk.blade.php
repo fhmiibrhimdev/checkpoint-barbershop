@@ -108,7 +108,7 @@
                         </div>
                         <div class='form-group'>
                             <label for='tanggal'>Tanggal</label>
-                            <input type='date' wire:model='tanggal' id='tanggal' class='form-control'>
+                            <input type='datetime-local' wire:model='tanggal' id='tanggal' class='form-control'>
                             @error('tanggal') <span class='text-danger'>{{ $message }}</span> @enderror
                         </div>
                         <div class='form-group'>

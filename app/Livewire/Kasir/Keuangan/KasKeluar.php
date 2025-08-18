@@ -74,7 +74,7 @@ class KasKeluar extends Component
                 return $query->where('kas.id_cabang', $this->filter_id_cabang);
             })
             ->where('status', 'Out')
-            ->orderBy('id', 'ASC')
+            ->orderBy('id', 'DESC')
             ->paginate($this->lengthData);
 
         return view('livewire.kasir.keuangan.kas-keluar', compact('data'));

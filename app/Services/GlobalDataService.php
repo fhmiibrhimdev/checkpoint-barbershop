@@ -23,6 +23,12 @@ class GlobalDataService
         return DB::table('kategori_produk')->select('id', 'nama_kategori')->get();
     }
 
+    // Fungsi untuk mengambil data kategori produk
+    public function getKategorisCustom()
+    {
+        return DB::table('kategori_produk')->select('id', 'nama_kategori');
+    }
+
     // Fungsi untuk mengambil data kategori satuan
     public function getSatuans()
     {

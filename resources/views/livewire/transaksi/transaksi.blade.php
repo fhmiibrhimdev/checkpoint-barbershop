@@ -190,8 +190,9 @@
                                 class="fas fa-trash"></i></button> --}}
                             <a target="_BLANK" href="{{ url('/transaksi/print-nota/'.\Crypt::encrypt($row->id)) }}"
                                 class="btn btn-info" title="Cetak Struk"><i class="fas fa-print"></i></a>
-                            <a target="_BLANK" href="{{ url('https://wa.me/'.$row->no_telp) }}"
-                                class="btn btn-success"><i class="fab fa-whatsapp"></i></a>
+                            <a wire:click.prevent="kirimWA({{ $row->id }})" data-toggle="modal" data-backdrop="static"
+                                data-keyboard="false" data-target="#kirimWAModal" class="btn btn-success"><i
+                                    class="fab fa-whatsapp"></i></a>
 
                             @endif
                         </div>
@@ -213,6 +214,74 @@
             <i class="far fa-plus"></i>
         </button> --}}
     </section>
+
+    <div class="modal fade" data-backdrop="static" wire:ignore.self id="kirimWAModal"
+        aria-labelledby="kirimWAModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="kirimWAModalLabel">Kirim Pesan WA</h5>
+                    <button type="button" wire:click="cancel()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="tw-flex tw-justify-between">
+                            <p class="tw-tracking-wider tw-text-[#34395e] tw-font-semibold">Status Wa: </p>
+
+                            <div>
+                                {{-- Saat loading --}}
+                                <span wire:loading>
+                                    <p class="tw-tracking-wider text-warning tw-font-semibold">Loading...</p>
+                                </span>
+
+                                {{-- Saat sudah selesai --}}
+                                <span wire:loading.remove>
+                                    @if ($statusConnected)
+                                    <p class="tw-tracking-wider text-success tw-font-semibold">Connected!</p>
+                                    @else
+                                    <p class="tw-tracking-wider text-danger tw-font-semibold">Disconnected!</p>
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row tw-mt-5">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="wa_no_transaksi">No. Transaksi</label>
+                                    <input type="text" wire:model="wa_no_transaksi" id="wa_no_transaksi"
+                                        class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="wa_nama_pelanggan">Nama Pelangan</label>
+                                    <input type="text" wire:model="wa_nama_pelanggan" id="wa_nama_pelanggan"
+                                        class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="wa_no_telp">Nomor WhatsApp</label>
+                            <input type="text" wire:model="wa_no_telp" id="wa_no_telp" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="template_pesan">Template Pesan Pembayaran</label>
+                            <textarea wire:model="template_pesan" id="template_pesan" style="height: 100px"
+                                class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" wire:click="cancel()" class="btn btn-secondary tw-bg-gray-300"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" wire:click.prevent="sendWA()" wire:loading.attr="disabled"
+                            class="btn btn-primary tw-bg-blue-500"><i class="fas fa-paper-plane"></i> Kirim WA</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" data-backdrop="static" wire:ignore.self id="formDataModal"
         aria-labelledby="formDataModalLabel" aria-hidden="true">
@@ -650,7 +719,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" data-backdrop="static" wire:ignore.self id="totalOmsetModal"
         aria-labelledby="totalOmsetModalLabel" aria-hidden="true">
         <div class='modal-dialog tw-w-full tw-m-0 sm:tw-w-auto sm:tw-m-[1.75rem_auto] tw-overflow-y-[initial]'>
@@ -703,6 +771,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" data-backdrop="static" wire:ignore.self id="totalPembayaranCashModal"
         aria-labelledby="totalPembayaranCashModalLabel" aria-hidden="true">
         <div class='modal-dialog tw-w-full tw-m-0 sm:tw-w-auto sm:tw-m-[1.75rem_auto] tw-overflow-y-[initial]'>
@@ -758,6 +827,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" data-backdrop="static" wire:ignore.self id="totalPembayaranTransferModal"
         aria-labelledby="totalPembayaranTransferModalLabel" aria-hidden="true">
         <div class='modal-dialog tw-w-full tw-m-0 sm:tw-w-auto sm:tw-m-[1.75rem_auto] tw-overflow-y-[initial]'>
@@ -814,6 +884,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" data-backdrop="static" wire:ignore.self id="totalPiutangModal"
         aria-labelledby="totalPiutangModalLabel" aria-hidden="true">
         <div class='modal-dialog tw-w-full tw-m-0 sm:tw-w-auto sm:tw-m-[1.75rem_auto] tw-overflow-y-[initial]'>
@@ -917,6 +988,10 @@
     // $(document).ready(function () {
     //     $('#totalOmsetModal').modal('show')
     // });
+    window.addEventListener('open-wa', e => {
+        console.log('Open WA:', e.detail[0].url);
+        window.open(e.detail[0].url, '_blank'); // buka link wa.me di tab baru
+    })
     window.addEventListener('initSelect2', event => {
         $(document).ready(function () {
             $('.select2').each(function () {

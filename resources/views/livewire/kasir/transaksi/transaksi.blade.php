@@ -183,7 +183,9 @@
                             <a target="_BLANK" href="{{ url('/transaksi/print-nota/'.\Crypt::encrypt($row->id)) }}"
                                 class="btn {{ $row->id_karyawan == $id_karyawan ? 'btn-info' : 'tw-bg-gray-100 tw-text-gray-600' }}"
                                 title="Cetak Struk"><i class="fas fa-print"></i></a>
-                            <a target="_BLANK" href="{{ url('https://wa.me/'.$row->no_telp) }}"
+
+                            <a wire:click.prevent="kirimWA({{ $row->id }})" data-toggle="modal" data-backdrop="static"
+                                data-keyboard="false" data-target="#kirimWAModal"
                                 class="btn {{ $row->id_karyawan == $id_karyawan ? 'btn-warning' : 'tw-bg-gray-100 tw-text-gray-600' }}"><i
                                     class="fab fa-whatsapp"></i></a>
 
@@ -207,6 +209,74 @@
             <i class="far fa-plus"></i>
         </button>
     </section>
+
+    <div class="modal fade" data-backdrop="static" wire:ignore.self id="kirimWAModal"
+        aria-labelledby="kirimWAModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="kirimWAModalLabel">Kirim Pesan WA</h5>
+                    <button type="button" wire:click="cancel()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="tw-flex tw-justify-between">
+                            <p class="tw-tracking-wider tw-text-[#34395e] tw-font-semibold">Status Wa: </p>
+
+                            <div>
+                                {{-- Saat loading --}}
+                                <span wire:loading>
+                                    <p class="tw-tracking-wider text-warning tw-font-semibold">Loading...</p>
+                                </span>
+
+                                {{-- Saat sudah selesai --}}
+                                <span wire:loading.remove>
+                                    @if ($statusConnected)
+                                    <p class="tw-tracking-wider text-success tw-font-semibold">Connected!</p>
+                                    @else
+                                    <p class="tw-tracking-wider text-danger tw-font-semibold">Disconnected!</p>
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row tw-mt-5">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="wa_no_transaksi">No. Transaksi</label>
+                                    <input type="text" wire:model="wa_no_transaksi" id="wa_no_transaksi"
+                                        class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="wa_nama_pelanggan">Nama Pelangan</label>
+                                    <input type="text" wire:model="wa_nama_pelanggan" id="wa_nama_pelanggan"
+                                        class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="wa_no_telp">Nomor WhatsApp</label>
+                            <input type="text" wire:model="wa_no_telp" id="wa_no_telp" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="template_pesan">Template Pesan Pembayaran</label>
+                            <textarea wire:model="template_pesan" id="template_pesan" style="height: 100px"
+                                class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" wire:click="cancel()" class="btn btn-secondary tw-bg-gray-300"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" wire:click.prevent="sendWA()" wire:loading.attr="disabled"
+                            class="btn btn-primary tw-bg-blue-500"><i class="fas fa-paper-plane"></i> Kirim WA</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" data-backdrop="static" wire:ignore.self id="formDataModal"
         aria-labelledby="formDataModalLabel" aria-hidden="true">

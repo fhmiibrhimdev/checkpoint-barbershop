@@ -72,10 +72,10 @@
                 </div>
             </div>
         </div>
-        <button wire:click.prevent='isEditingMode(false)' class='btn-modal' data-toggle='modal' data-backdrop='static'
+        {{-- <button wire:click.prevent='isEditingMode(false)' class='btn-modal' data-toggle='modal' data-backdrop='static'
             data-keyboard='false' data-target='#formDataModal'>
             <i class='far fa-plus'></i>
-        </button>
+        </button> --}}
     </section>
 
     <div class='modal fade' wire:ignore.self id='formDataModal' aria-labelledby='formDataModalLabel' aria-hidden='true'>

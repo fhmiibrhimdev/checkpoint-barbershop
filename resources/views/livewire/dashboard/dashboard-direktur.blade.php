@@ -2,6 +2,7 @@
     <section class="section custom-section">
         <div class='section-header tw-flex tw-w-full'>
             <h1>Dashboard </h1>
+            @if (Auth::user()->hasRole('direktur'))
             <div class="ml-auto">
                 <select wire:model.live='filter_id_cabang' id='filter_id_cabang'
                     class='tw-w-full tw-border tw-border-gray-300 tw-rounded-full tw-text-sm'>
@@ -12,6 +13,7 @@
                     @endforeach
                 </select>
             </div>
+            @endif
         </div>
 
 

@@ -86,6 +86,135 @@ class Transaksi extends Component
         return view('livewire.caspter.transaksi.transaksi', compact('data'));
     }
 
+    public $wa_no_transaksi, $wa_nama_pelanggan, $wa_no_telp, $template_pesan, $statusConnected;
+    // config minimal
+    private $waBase   = 'http://localhost:5000';
+    private $waCredId = '6289601922906';
+
+    public function kirimWA($id)
+    {
+        // cek status gateway
+        $raw  = @file_get_contents("{$this->waBase}/get-state?cred_id={$this->waCredId}");
+        $json = $raw !== false ? json_decode($raw, true) : null;
+        $this->statusConnected = is_string($json) ? $json === 'connected'
+            : (is_array($json) ? (($json['state'] ?? null) === 'connected') : false);
+
+        $data = DB::table('transaksi as t')
+            ->select(
+                't.no_transaksi',
+                'dp.nama_pelanggan',
+                'dp.no_telp',
+                't.status',
+                't.total_akhir',
+                't.jumlah_dibayarkan',
+                't.kembalian',
+                'kp.nama_kategori'
+            )
+            ->join('daftar_pelanggan as dp', 'dp.id', 't.id_pelanggan')
+            ->join('kategori_pembayaran as kp', 'kp.id', 't.id_metode_pembayaran')
+            ->where('t.id', $id)
+            ->first();
+
+        $pesan = DB::table('cabang_lokasi')
+            ->select('nama_cabang', 'template_pesan_booking', 'template_pesan_belum_lunas', 'template_pesan_lunas', 'template_pesan_dibatalkan')
+            ->where('id', $this->filter_id_cabang)
+            ->first();
+
+        $this->wa_no_transaksi = $data->no_transaksi;
+        $this->wa_nama_pelanggan = $data->nama_pelanggan;
+        $this->wa_no_telp = $data->no_telp;
+
+        switch ($data->status) {
+            case '1':
+                $this->template_pesan = $pesan->template_pesan_booking;
+                break;
+            case '2':
+                $this->template_pesan = $pesan->template_pesan_belum_lunas;
+                break;
+            case '3':
+                $this->template_pesan = $pesan->template_pesan_lunas;
+                break;
+            case '4':
+                $this->template_pesan = $pesan->template_pesan_dibatalkan;
+                break;
+            default:
+                $this->template_pesan = "Terima kasih telah bertransaksi dengan kami.";
+        }
+
+        // --- hitung angka & siapkan nilai pengganti ---
+        $totalTagihan = (int) ($data->total_akhir ?? 0);
+        $totalBayar   = (int) ($data->jumlah_dibayarkan ?? 0);
+        $sisaBayar    = max(0, $totalTagihan - $totalBayar);
+
+        $metode       = $data->nama_kategori ?? '-';        // dari join kategori_pembayaran
+        $namaCabang   = $pesan->nama_cabang ?? '-';
+        $encoded = base64_encode($data->no_transaksi);
+        // amankan untuk URL (karena base64 bisa punya + / =)
+        $encoded = rtrim(strtr($encoded, '+/', '-_'), '='); // base64url opsional
+        $linkNota = route('nota.show', ['key' => $encoded]);                 // ganti sesuai route kamu, mis. route('nota.show',$id)
+
+        // --- ganti placeholder di template ---
+        $tpl = $this->template_pesan ?? '';
+
+        $tpl = strtr($tpl, [
+            '[nama_pelanggan]'   => $this->wa_nama_pelanggan ?? '-',
+            '[no_transaksi]'     => $this->wa_no_transaksi ?? '-',
+            '[nama_cabang]'      => $namaCabang,
+            '[total_tagihan]'    => number_format($totalTagihan, 0, ',', '.'),
+            '[total_bayar]'      => number_format($totalBayar, 0, ',', '.'),
+            '[sisa_bayar]'       => number_format($sisaBayar, 0, ',', '.'),
+            '[metode_pembayaran]' => $metode,
+            '[link_nota]'        => $linkNota,
+        ]);
+
+        // jika template tersimpan dengan teks "\n", ubah ke newline asli
+        $tpl = str_replace("\\n", "\n", $tpl);
+
+        $this->template_pesan = $tpl;
+        // dd($id);
+    }
+
+    public function sendWA()
+    {
+        if (!$this->wa_no_telp || $this->wa_no_telp == "62") {
+            $this->dispatchAlert('error', 'Gagal', 'Nomor WA tidak boleh kosong!');
+            return;
+        }
+
+        if ($this->statusConnected) {
+            // --- kirim lewat gateway ---
+            $url = "{$this->waBase}/send-text-message?cred_id={$this->waCredId}";
+            $payload = json_encode([
+                'phone_number' => $this->wa_no_telp,
+                'message'      => $this->template_pesan ?? '',
+            ], JSON_UNESCAPED_UNICODE);
+
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT        => 3,
+                CURLOPT_POST           => true,
+                CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+                CURLOPT_POSTFIELDS     => $payload,
+            ]);
+            $resp = curl_exec($ch);
+            $err  = curl_errno($ch);
+            $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+            curl_close($ch);
+
+            if ($err || $code < 200 || $code >= 300) {
+                $this->dispatchAlert('error', 'Gagal', 'Kirim WA via gateway gagal.');
+                return;
+            }
+
+            $this->dispatchAlert('success', 'Berhasil', 'Pesan terkirim via gateway.');
+        } else {
+            // --- fallback direct ke wa.me ---
+            $url = "https://wa.me/{$this->wa_no_telp}?text=" . rawurlencode($this->template_pesan ?? '');
+            $this->dispatch('open-wa', ['url' => $url]);
+        }
+    }
+
     // ============================================================================
     // INITIALIZATION METHODS
     // ============================================================================
@@ -102,11 +231,6 @@ class Transaksi extends Component
         // $this->cabangs = $this->globalDataService->getCabangs();
         $this->pembayarans = $this->globalDataService->getMetodePembayaran();
 
-        // Set cabang default dari user
-        $id_cabang = $this->user->id_cabang;
-        $this->id_cabang = $id_cabang;
-        $this->filter_id_cabang = $id_cabang;
-
         // Load data tergantung cabang
         $this->pelanggans = $this->globalDataService->getPelanggansCustom($this->id_cabang);
         $this->produks = $this->getProdukByCabang($this->id_cabang);
@@ -120,6 +244,11 @@ class Transaksi extends Component
         $this->id_karyawan = DB::table('daftar_karyawan')
             ->where('id_user', $this->user->id)
             ->value('id');
+
+        // Set cabang default dari user
+        $id_cabang = $this->user->id_cabang;
+        $this->id_cabang = $id_cabang;
+        $this->filter_id_cabang = $id_cabang;
 
         $this->getReportHarian();
     }
@@ -974,9 +1103,33 @@ class Transaksi extends Component
         $search = '%' . $this->searchProduk . '%';
 
         $this->produks = DB::table('produk as p')
-            ->select('p.id', 'p.nama_item', 'p.harga_jasa', 'p.deskripsi', 'kp.nama_kategori')
+            ->select([
+                'p.id',
+                'p.nama_item',
+                'p.harga_jasa',
+                'p.deskripsi',
+                'p.stock',
+                'kp.nama_kategori'
+            ])
             ->join('kategori_produk as kp', 'kp.id', '=', 'p.id_kategori')
+            ->leftJoin('komisi as k', 'k.id_produk', '=', 'p.id')
             ->where('p.id_cabang', $this->id_cabang)
+            ->where(function ($query) {
+                $query
+                    // 1. Jasa Barbershop (komisi wajib)
+                    ->orWhere(function ($q) {
+                        $q->whereIn('kp.nama_kategori', ['Jasa Barbershop', 'Treatment'])
+                            ->where('k.id_karyawan', $this->id_karyawan)
+                            ->where('k.komisi_persen', '>', 0)
+                            ->whereNotNull('k.komisi_persen')
+                            ->whereNotNull('k.id');
+                    })
+                    // 2. Produk Barbershop (stok wajib > 0, komisi bebas)
+                    ->orWhere(function ($q) {
+                        $q->where('kp.nama_kategori', 'Produk Barbershop')
+                            ->where('p.stock', '>', 0);
+                    });
+            })
             ->where(function ($query) use ($search) {
                 $query->where('p.nama_item', 'LIKE', $search)
                     ->orWhere('p.deskripsi', 'LIKE', $search);

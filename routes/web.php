@@ -24,6 +24,7 @@ use App\Livewire\Persediaan\StokMasuk;
 use App\Livewire\Persediaan\StokKeluar;
 use App\Livewire\Persediaan\StokOpname;
 use App\Livewire\Laporan\LaporanLabaRugi;
+use App\Livewire\Pengaturan\ProfileUsaha;
 use App\Livewire\Transaksi\JadwalBooking;
 use App\Livewire\Laporan\LaporanPembukuan;
 use App\Livewire\Persediaan\SaldoAwalItem;
@@ -36,6 +37,7 @@ use App\Livewire\Control\User as ControlUser;
 use App\Livewire\DataPendukung\KategoriProduk;
 use App\Livewire\DataPendukung\KategoriSatuan;
 use App\Http\Controllers\Laporan\HppController;
+use App\Http\Controllers\NotaDigitalController;
 use App\Livewire\DataPendukung\KategoriKeuangan;
 use App\Http\Controllers\Laporan\OmsetController;
 use App\Livewire\DataPendukung\KategoriPembayaran;
@@ -75,6 +77,8 @@ use App\Livewire\Caspter\Transaksi\JadwalBooking as CapsterJadwalBooking;
 use App\Livewire\Admin\DataMaster\DaftarPelanggan as AdminDaftarPelanggan;
 use App\Livewire\Admin\DataPendukung\KategoriSatuan as AdminKategoriSatuan;
 use App\Livewire\Admin\DataPendukung\KategoriKeuangan as AdminKategoriKeuangan;
+use App\Livewire\Capster\DataMaster\Produk as CapsterProduk;
+use App\Livewire\Kasir\DataMaster\Produk as KasirProduk;
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
@@ -82,6 +86,9 @@ Route::get('/', [AuthenticatedSessionController::class, 'create'])
 Route::post('/', [AuthenticatedSessionController::class, 'store']);
 
 Route::get('test', Test::class);
+
+Route::get('nota-digital/{key}', [NotaDigitalController::class, 'printNota'])
+    ->name('nota.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
@@ -107,6 +114,8 @@ Route::middleware('auth')->group(function () {
         ->name('laporan.pembukuan.pdf');
     Route::get('/laporan/laporan-laba-rugi/pdf', [LabaRugiController::class, 'exportPdf'])
         ->name('laporan.laba-rugi.pdf');
+
+    Route::get('/pengaturan/profile-usaha', ProfileUsaha::class);
 });
 
 Route::group(['middleware' => ['auth', 'role:direktur']], function () {
@@ -140,6 +149,7 @@ Route::group(['middleware' => ['auth', 'role:direktur']], function () {
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/kategori/keuangan', AdminKategoriKeuangan::class);
+    Route::get('/admin/kategori/produk', KategoriProduk::class);
     Route::get('/admin/kategori/satuan', AdminKategoriSatuan::class);
     Route::get('/admin/master-data/produk', AdminProduk::class);
 
@@ -168,6 +178,11 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:kasir']], function () {
+    Route::get('/kasir/kategori/keuangan', AdminKategoriKeuangan::class);
+    Route::get('/kasir/kategori/produk', KategoriProduk::class);
+    Route::get('/kasir/master-data/produk', KasirProduk::class);
+    Route::get('/kasir/master-data/daftar-pelanggan', AdminDaftarPelanggan::class);
+    Route::get('/kasir/master-data/daftar-supplier', AdminDaftarSupplier::class);
     // 
     Route::get('/kasir/persediaan/stok-masuk', KasirStokMasuk::class);
     Route::get('/kasir/persediaan/stok-keluar', KasirStokKeluar::class);
@@ -175,19 +190,29 @@ Route::group(['middleware' => ['auth', 'role:kasir']], function () {
 
     Route::get('/kasir/transaksi', KasirTransaksi::class);
 
-    Route::get('/kasir/keuangan/kas-masuk', KasirKasMasuk::class);
+    // Route::get('/kasir/keuangan/kas-masuk', KasirKasMasuk::class);
     Route::get('/kasir/keuangan/kas-keluar', KasirKasKeluar::class);
-    Route::get('/kasir/keuangan/hutang', KasirHutang::class);
-    Route::get('/kasir/keuangan/hutang/{id_hutang}', KasirHutang::class);
+    // Route::get('/kasir/keuangan/hutang', KasirHutang::class);
+    // Route::get('/kasir/keuangan/hutang/{id_hutang}', KasirHutang::class);
     Route::get('/kasir/keuangan/piutang', KasirPiutang::class);
     Route::get('/kasir/keuangan/piutang/{id_transaksi}', KasirPiutang::class);
     Route::get('/kasir/keuangan/cash-on-bank', KasirCashOnBank::class);
 });
 
 Route::group(['middleware' => ['auth', 'role:capster']], function () {
-    // 
+    Route::get('/capster/kategori/keuangan', AdminKategoriKeuangan::class);
+    Route::get('/capster/kategori/produk', KategoriProduk::class);
+    Route::get('/capster/master-data/produk', CapsterProduk::class);
+    Route::get('/capster/master-data/daftar-pelanggan', AdminDaftarPelanggan::class);
+    Route::get('/capster/master-data/daftar-supplier', AdminDaftarSupplier::class);
+
     Route::get('/capster/transaksi', CapsterTransaksi::class);
     Route::get('/capster/transaksi/jadwal-booking', CapsterJadwalBooking::class);
+
+    Route::get('/capster/keuangan/kas-keluar', KasirKasKeluar::class);
+    Route::get('/capster/keuangan/piutang', KasirPiutang::class);
+    Route::get('/capster/keuangan/piutang/{id_transaksi}', KasirPiutang::class);
+    Route::get('/capster/keuangan/cash-on-bank', KasirCashOnBank::class);
 });
 
 require __DIR__ . '/auth.php';

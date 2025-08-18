@@ -28,8 +28,8 @@
                             <thead class='tw-sticky tw-top-0'>
                                 <tr class='tw-text-gray-700'>
                                     <th width='6%' class='text-center'>No</th>
+                                    <th class='tw-whitespace-nowrap'>Waktu</th>
                                     <th class='tw-whitespace-nowrap'>No. Reference</th>
-                                    <th class='tw-whitespace-nowrap'>Tanggal</th>
                                     <th class='tw-whitespace-nowrap'>Keterangan</th>
                                     <th class='tw-whitespace-nowrap'>Kategori Pengeluaran</th>
                                     <th class='tw-whitespace-nowrap'>Jumlah</th>
@@ -38,12 +38,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($data as $row)
+                                @forelse ($data->groupBy('tanggal') as $result)
+                                <tr>
+                                    <td class="tw-font-semibold" colspan='8'>
+                                        Tanggal: {{ \Carbon\Carbon::parse($result->first()->tanggal)->format('d M Y') }}
+                                    </td>
+                                </tr>
+                                @foreach ($result as $row)
                                 <tr class='text-center'>
                                     <td class='tw-whitespace-nowrap'>{{ $loop->index + 1 }}</td>
-                                    <td class='tw-whitespace-nowrap text-left'>{{ $row->no_referensi }}</td>
                                     <td class='tw-whitespace-nowrap text-left'>
-                                        {{ \Carbon\Carbon::parse($row->tanggal)->format('d M Y') }}</td>
+                                        {{ \Carbon\Carbon::parse($row->tanggal)->format('H:i') }}</td>
+                                    <td class='tw-whitespace-nowrap text-left'>{{ $row->no_referensi }}</td>
                                     <td class='tw-whitespace-nowrap text-left'>{{ $row->keterangan }}</td>
                                     <td class='tw-whitespace-nowrap text-left'>{{ $row->nama_kategori }}</td>
                                     <td class='tw-whitespace-nowrap text-left'>@money($row->jumlah)</td>
@@ -59,6 +65,7 @@
                                         </button>
                                     </td>
                                 </tr>
+                                @endforeach
                                 @empty
                                 <tr>
                                     <td colspan='9' class='text-center'>No data available in the table</td>
@@ -106,7 +113,7 @@
                         </div>
                         <div class='form-group'>
                             <label for='tanggal'>Tanggal</label>
-                            <input type='date' wire:model='tanggal' id='tanggal' class='form-control'>
+                            <input type='datetime-local' wire:model='tanggal' id='tanggal' class='form-control'>
                             @error('tanggal') <span class='text-danger'>{{ $message }}</span> @enderror
                         </div>
                         <div class='form-group'>

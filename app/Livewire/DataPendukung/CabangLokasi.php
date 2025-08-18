@@ -80,10 +80,19 @@ class CabangLokasi extends Component
         DB::beginTransaction();
         try {
             $cabang = ModelsCabangLokasi::create([
-                'nama_cabang'         => $this->nama_cabang,
-                'alamat'              => $this->alamat,
-                'status'              => $this->status,
-                'no_telp'             => $this->no_telp,
+                'nama_cabang'              => $this->nama_cabang,
+                'alamat'                   => $this->alamat,
+                'status'                   => $this->status,
+                'no_telp'                  => $this->no_telp,
+                'template_pesan_booking'   => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nBooking Anda telah tercatat di [nama_cabang].\n\nJika ada pertanyaan silakan hubungi admin.",
+
+                'template_pesan_belum_lunas' => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nKami dari [nama_cabang]\nStatus pembayaran anda BELUM LUNAS.\nTotal tagihan : Rp. [total_tagihan]\nPembayaran Senilai Rp. [total_bayar],- via [metode_pembayaran] TELAH KAMI TERIMA.\nSisa bayar : Rp. [sisa_bayar]\n\nSilakan lakukan pelunasan sesuai ketentuan.\nBerikut link nota digital: [link_nota]",
+
+                'template_pesan_lunas' => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nKami dari [nama_cabang]\nPembayaran Senilai Rp. [total_bayar],- via [metode_pembayaran] TELAH KAMI TERIMA.\n\nBerikut link nota digital: [link_nota]",
+
+                'template_pesan_dibatalkan' => "Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\n\nKami dari [nama_cabang]\nMohon maaf, transaksi anda telah DIBATALKAN.\n\nJika ada pertanyaan silakan hubungi admin.",
+
+                // kalau ada kebutuhan lain tinggal tambah
             ]);
 
             // $this->createKategoriProduk($cabang->id);
