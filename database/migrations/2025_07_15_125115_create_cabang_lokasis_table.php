@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('template_pesan_belum_lunas')->default('Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\nKami dari [nama_cabang]\nStatus pembayaran anda BELUM LUNAS.\nTotal tagihan : Rp. [total_tagihan]\nPembayaran Senilai Rp. [total_bayar],- via [metode_pembayaran] TELAH KAMI TERIMA.\nSisa bayar : Rp. [sisa_bayar]\n\nSilakan lakukan pelunasan sesuai ketentuan.\nBerikut link nota digital: [link_nota]');
             $table->text('template_pesan_lunas')->default('Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\nKami dari [nama_cabang]\nPembayaran Senilai Rp. [total_bayar],- via [metode_pembayaran] TELAH KAMI TERIMA.\n\nBerikut link nota digital: [link_nota]');
             $table->text('template_pesan_dibatalkan')->default('Halo, [nama_pelanggan]\nNo Transaksi : [no_transaksi]\nKami dari [nama_cabang]\nMohon maaf, transaksi anda telah DIBATALKAN.\n\nJika ada pertanyaan silakan hubungi admin.');
+            $table->string('cred_id')->nullable();
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
         });
     }

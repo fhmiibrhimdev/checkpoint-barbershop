@@ -60,8 +60,9 @@ class Produk extends Component
         $this->id_cabang =  Auth::user()->id_cabang;
         $this->kategoris  = $this->globalDataService->getKategoris();
         $this->satuans    = $this->globalDataService->getSatuans();
+        $this->cabangs    = $this->globalDataService->getCabangs();
 
-        $this->karyawans = $this->globalDataService->getKaryawansCustom($this->id_cabang ?? $this->cabangs->first()->id);
+        $this->karyawans = $this->globalDataService->getKaryawansCustom($this->id_cabang ?? optional($this->cabangs->first())->id);
         // dd($this->karyawans);
 
         // Init komisi_karyawan default kosong
@@ -345,8 +346,8 @@ class Produk extends Component
     private function resetInputFields()
     {
         $this->id_user             = Auth::user()->id;
-        $this->id_kategori         = $this->kategoris->first()->id;
-        $this->id_satuan           = $this->satuans->first()->id;
+        $this->id_kategori         = optional($this->kategoris->first())->id;
+        $this->id_satuan           = optional($this->satuans->first())->id;
         $this->kode_item           = NULL;
         $this->nama_item           = '';
         $this->harga_jasa          = '0';
